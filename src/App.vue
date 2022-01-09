@@ -7,7 +7,11 @@
   <v-app-bar app>
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-    <v-toolbar-title>IMV-Landau e. V. - Islamischer multikultureller Verein Landau</v-toolbar-title>
+    <v-toolbar-title>
+      <v-text :class="['text-caption']">
+        IMV-Landau e. V. - Islamischer multikultureller Verein Landau
+      </v-text>
+    </v-toolbar-title>
     <v-spacer></v-spacer>
 
     <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
