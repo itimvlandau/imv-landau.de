@@ -1,22 +1,72 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Startseite',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Home.vue')
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/news',
+    name: 'Neuigkeiten',
+    component: () => import( /* webpackChunkName: "about" */ '../views/News.vue')
+  },
+  {
+    name: 'Der Islam',
+    path: '/islam',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Islam.vue')
+  },
+  {
+    name: 'Die Propheten',
+    path: '/islam/prophets',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Prophets.vue')
+  },
+  {
+    name: 'Der Sinn des Lebens',
+    path: '/islam/sense-of-life',
+    component: () => import( /* webpackChunkName: "about" */ '../views/SenseOfLive.vue')
+  },
+  {
+    name: 'Frauen im Islam',
+    path: '/islam/women-and-islam',
+    component: () => import( /* webpackChunkName: "about" */ '../views/WomenAndIslam.vue')
+  },
+  {
+    name: 'Der edle Koran',
+    path: '/islam/noble-quran',
+    component: () => import( /* webpackChunkName: "about" */ '../views/NobleQuran.vue')
+  },
+  {
+    path: '/prayer',
+    name: 'Gebet',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Prayer.vue')
+  },
+  {
+    path: '/donate',
+    name: 'Spenden',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Donate.vue')
+  },
+  {
+    path: '/schedule',
+    name: 'Aktivitäten',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Schedule.vue')
+  },
+  {
+    path: '/location',
+    name: 'Kontakt',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Location.vue')
+  },
+  {
+    path: '/statute',
+    name: 'Satzung',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Statute.vue')
+  },
+  {
+    path: '/imprint',
+    name: 'Impressum',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Imprint.vue')
   }
 ]
 
