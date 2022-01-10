@@ -15,7 +15,7 @@ const routes = [{
   },
   {
     name: 'Der Islam',
-    path: '/islam',
+    path: '/islam/definition',
     component: () => import( /* webpackChunkName: "about" */ '../views/Islam.vue')
   },
   {

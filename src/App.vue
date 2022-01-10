@@ -82,7 +82,7 @@ export default {
         subLinks: [{
             icon: 'mdi-star',
             text: 'Der Islam',
-            to: '/islam',
+            to: '/islam/definition',
           },
           {
             icon: 'mdi-star',
