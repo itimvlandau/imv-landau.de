@@ -1,0 +1,120 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+#############################
+# Variables and configuration
+#############################
+
+Vagrant.configure("2") do |config|
+
+    module OS
+      def OS.windows?
+          (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+      end
+
+      def OS.mac?
+          (/darwin/ =~ RUBY_PLATFORM) != nil
+      end
+
+      def OS.unix?
+          !OS.windows?
+      end
+
+      def OS.linux?
+          OS.unix? and not OS.mac?
+      end
+    end
+    if OS.linux?
+      $default_network_interface = `ip route | awk '/^default/ {printf "%s", $5; exit 0}'`
+      config.vm.network "public_network", bridge: "#$default_network_interface"
+    end
+
+
+# def share_folders(folders)
+#   folders.each do |folder|
+#     args = ["--name",
+#       folder[:name],
+#       "--hostpath",
+#       '\\\\?\\' + folder[:hostpath].gsub(/[\/\\]/,'\\')]
+#     args << "--transient" if folder.has_key?(:transient) && folder[:transient]
+#
+#     # Add the shared folder
+#     execute("sharedfolder", "add", @uuid, *args)
+#
+#     # Enable symlinks on the shared folder
+#     execute("setextradata", @uuid, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/#{folder[:name]}", "1")
+#   end
+# end
+# config.vm.synced_folder File.dirname(__FILE__) + '/projects', '/home/vagrant/projects', create: true
+
+    config.vm.define "imv" do |imv|
+      # Increase disk speed with nfs: true (Linux only)
+      # imv.vm.synced_folder "./", "/home/vagrant/imv-landau", nfs: true
+      # https://www.admin-wissen.de/tutorials/devops-mit-vagrant-und-chef/vagrant-und-chef-performanceoptimierung
+      # imv.vm.synced_folder "./", "/home/vagrant/imv-landau", nfs: true, mount_options: ['rw', 'vers=3', 'tcp', 'fsc']
+      # imv.vm.synced_folder "./", "/var/www/imv-landau", disabled: true
+      imv.vm.synced_folder "./", "/var/www/imv-landau"
+      # imv.vm.synced_folder "./", "/var/www/imv-landau", type: "rsync", rsync__auto: true, rsync__exclude: ['./node_modules*']
+      # imv.vm.synced_folder "./", "/var/www/imv-landau", type: "rsync", rsync__auto: true, rsync__exclude: ['./node_modules*']
+
+# # First, disable default vagrant share
+# imv.vm.synced_folder ".", "/vagrant", disabled: true
+# # Next, setup the shared Vagrant folder manually, bypassing Windows 260 character path limit
+# imv.vm.provider "virtualbox" do |v|
+# 	v.customize ["sharedfolder", "add", :id, "--name", "vagrant", "--hostpath", (("//?/" + File.dirname(__FILE__)).gsub("/","\\"))]
+# 	v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
+# end
+# # Finally, mount the shared folder on the guest system during provision
+# imv.vm.provision :shell, inline: "mkdir -p /vagrant", run: "always"
+# imv.vm.provision :shell, inline: "mount -t vboxsf -o uid=`id -u vagrant`,gid=`getent group vagrant | cut -d: -f3` vagrant /vagrant", run: "always"
+
+# Now you have a /vagrant folder on your Linux environment that does not have the Windows 260 character path limit issue
+
+      ####### Resources #######
+      # imv.vm.synced_folder "./", "/var/www/imv-landau", disabled: true
+      imv.vm.provider "virtualbox" do |vb|
+      #   vb.customize ["sharedfolder", "add", :id, "--name", "bla", "--hostpath", (("//?/" + File.dirname(__FILE__)).gsub("/","\\"))]
+      #   # Display the VirtualBox GUI when booting the machine
+         vb.gui = false
+         vb.name = "imv-landau"
+         vb.memory = 3000
+         vb.cpus = 4
+      end
+
+      # ####### Provision #######
+      # # imv.vm.provision "shell", inline: <<-SHELL
+      imv.vm.provision "shell", run: "always", privileged: false, inline: <<-SHELL
+         # sudo apt update
+         sudo apt update && sudo apt install yamllint ansible-lint -y
+         # mkdir ~/vagrant_node_modules
+         # sudo mkdir -p /var/www/imv-landau/node_modules
+         # sudo mount --bind ~/vagrant_node_modules /var/www/imv-landau/node_modules
+         # sudo mount -t vboxsf -o uid=`id -u vagrant`,gid=`getent group vagrant | cut -d: -f3` bla /var/www/imv-landau
+         cd /var/www/imv-landau
+         ansible-lint ansible.yml
+         ansible-playbook ansible.yml
+         # pm2 start pm2.config.dev.json
+      SHELL
+
+      # Setup and enable/disable ssh access
+      # imv.ssh.username = "vagrant"
+      # imv.ssh.password = "vagrant"
+      # imv.ssh.insert_key = true
+
+      # turn off the check if the plugin is installed
+      # if Vagrant.has_plugin?("vagrant-vbguest")
+      #   imv.vbguest.auto_update = false
+      # end
+
+      VAGRANT_DISABLE_RESOLV_REPLACE=1
+      imv.vm.box = "generic/ubuntu2010"
+      imv.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", guest: 22,   host: 22, host_ip: "127.0.0.1", id: "ssh"
+      imv.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+      for i in 8000..8100
+          imv.vm.network "forwarded_port", guest: i, host: i, host_ip: "127.0.0.1"
+      end
+    end
+end
