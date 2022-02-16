@@ -11,24 +11,24 @@
       user: vagrant
       home_path: /home/vagrant
   tasks:
-    - name: Run the equivalent of "apt-get update" as a separate step
+    - name: ********* apt-get update *********
       apt:
         upgrade: "yes"
         update_cache: yes
 
-    - name: Download Node.js setup script
+    - name: ********* download nodejs *********
       get_url: url=https://deb.nodesource.com/setup_14.x dest=/opt mode=755
 
-    - name: Setup Node.js
+    - name: ********* setup nodejs *********
       command: /opt/setup_14.x
       changed_when: false
 
-    - name: Install required packages
+    - name: ********* apt install ... *********
       apt:
         name: ['htop', 'git', 'curl', 'wget', 'nginx', 'nodejs']
         state: present
 
-    - name: "Install NPM-distributed command-line tools"
+    - name: ********* npm install -g ... *********
       npm:
         global: yes
         name: "{{ item }}"
@@ -36,25 +36,17 @@
         - pm2
         - '@vue/cli'
 
-    - name: Clone a private repository
-      git:
-       repo: "{{ git_repo_url }}"
-       dest: "{{ repo_path }}"
-       version: "{{ repo_branch }}"
-       accept_hostkey: yes
-       force: yes
-
-    - name: Create node_modules directory in home
+    - name: ********* create node_modules directory in home *********
       file:
         path: "{{ home_path }}/{{ repo_initials }}_node_modules"
         state: directory
 
-    - name: Create node_modules directory in {{ repo_path }}
+    - name: ********* create node_modules directory in {{ repo_path }} *********
       file:
         path: "{{ repo_path }}/node_modules"
         state: directory
 
-    - name: Mount node_modules directory to
+    - name: ********* mount node_modules directory to {{ home_path }}/{{ repo_initials }} *********
       become_user: {{ user }}
       ansible.posix.mount:
         path: "{{ home_path }}/{{ repo_initials }}_node_modules"
@@ -63,12 +55,12 @@
         state: mounted
         fstype: vboxsf
 
-    - name: Install packages based on package.json using the npm
+    - name: ********* npm install *********
       npm:
         path: "{{ repo_path }}"
         state: present
 
-    - name: Build app
+    - name: ********* npm run build *********
       command: npm run build
       changed_when: false
       args:
