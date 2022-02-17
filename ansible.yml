@@ -37,6 +37,8 @@
         - '@vue/cli'
 
     - name: "********* create node_modules directory in home *********"
+      become: true
+      become_user: "{{ user }}"
       file:
         path: "{{ home_path }}/{{ repo_initials }}_node_modules"
         state: directory
@@ -46,13 +48,20 @@
         path: "{{ repo_path }}/node_modules"
         state: directory
 
-    - name: "********* mount node_modules directory to *********"
+    - name: "********* mount node_modules directory to {{ home_path }}/{{ repo_initials }}_node_modules *********"
       mount:
-        path: "{{ home_path }}/{{ repo_initials }}_node_modules"
-        src: "{{ repo_path }}/node_modules"
-        opts: bind
+        path: "{{ repo_path }}/node_modules"
+        src: "{{ home_path }}/{{ repo_initials }}_node_modules"
+        opts: bind,rw
         state: mounted
         fstype: none
+
+    # - name: "********* link node_modules to {{ home_path }}/{{ repo_initials }}_node_modules *********"
+    #   file:
+    #     src: "{{ home_path }}/{{ repo_initials }}_node_modules"
+    #     dest: "{{ repo_path }}/node_modules"
+    #     state: link
+    #     force: yes
 
     - name: "********* npm install *********"
       npm:
