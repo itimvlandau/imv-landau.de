@@ -29,14 +29,33 @@ Vagrant.configure("2") do |config|
       config.vm.network "public_network", bridge: "#$default_network_interface"
     end
 
+    def share_folders(folders)
+      folders.each do |folder|
+        args = ["--name",
+          folder[:name],
+          "--hostpath",
+          '\\\\?\\' + folder[:hostpath].gsub(/[\/\\]/,'\\')]
+        args << "--transient" if folder.has_key?(:transient) && folder[:transient]
+
+        # Add the shared folder
+        execute("sharedfolder", "add", @uuid, *args)
+
+        # Enable symlinks on the shared folder
+        execute("setextradata", @uuid, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/#{folder[:name]}", "1")
+      end
+    end
+    config.vm.synced_folder File.dirname(__FILE__), '/var/www/imv-landau', create: true
+
     config.vm.define "imv" do |imv|
       # Increase disk speed with nfs: true (Linux only)
       # imv.vm.synced_folder "./", "/home/vagrant/imv-landau", nfs: true
       # https://www.admin-wissen.de/tutorials/devops-mit-vagrant-und-chef/vagrant-und-chef-performanceoptimierung
-      imv.vm.synced_folder "./", "/var/www/imv-landau"
+      # imv.vm.synced_folder "./", "/var/www/imv-landau"
 
       ####### Resources #######
       imv.vm.provider "virtualbox" do |vb|
+         # important for being able to create symlinks
+         # vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
          vb.gui = false
          vb.name = "imv-landau"
          vb.memory = 3000
