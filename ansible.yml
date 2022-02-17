@@ -6,29 +6,29 @@
   vars:
       repo_initials: imv
       git_repo_url: https://github.com/sufius/imv-landau.git
-      repo_path: /var/www/imv-Landau
+      repo_path: /var/www/imv-landau
       repo_branch: main
       user: vagrant
       home_path: /home/vagrant
   tasks:
-    - name: ********* apt-get update *********
+    - name: "********* apt-get update *********"
       apt:
         upgrade: "yes"
         update_cache: yes
 
-    - name: ********* download nodejs *********
+    - name: "********* download nodejs *********"
       get_url: url=https://deb.nodesource.com/setup_14.x dest=/opt mode=755
 
-    - name: ********* setup nodejs *********
+    - name: "********* setup nodejs *********"
       command: /opt/setup_14.x
       changed_when: false
 
-    - name: ********* apt install ... *********
+    - name: "********* apt install ... *********"
       apt:
         name: ['htop', 'git', 'curl', 'wget', 'nginx', 'nodejs']
         state: present
 
-    - name: ********* npm install -g ... *********
+    - name: "********* npm install -g ... *********"
       npm:
         global: yes
         name: "{{ item }}"
@@ -36,32 +36,31 @@
         - pm2
         - '@vue/cli'
 
-    - name: ********* create node_modules directory in home *********
+    - name: "********* create node_modules directory in home *********"
       file:
         path: "{{ home_path }}/{{ repo_initials }}_node_modules"
         state: directory
 
-    - name: ********* create node_modules directory in {{ repo_path }} *********
+    - name: "********* create node_modules directory in {{ repo_path }} *********"
       file:
         path: "{{ repo_path }}/node_modules"
         state: directory
 
-    - name: ********* mount node_modules directory to {{ home_path }}/{{ repo_initials }} *********
-      become_user: {{ user }}
-      ansible.posix.mount:
+    - name: "********* mount node_modules directory to *********"
+      mount:
         path: "{{ home_path }}/{{ repo_initials }}_node_modules"
         src: "{{ repo_path }}/node_modules"
-        opts: rw,nodev,relatime,iocharset=utf8,uid=1000,gid=1000,_netdev
+        opts: bind
         state: mounted
-        fstype: vboxsf
+        fstype: none
 
-    - name: ********* npm install *********
+    - name: "********* npm install *********"
       npm:
         path: "{{ repo_path }}"
         state: present
 
-    - name: ********* npm run build *********
-      command: npm run build
-      changed_when: false
-      args:
-        chdir: "{{ repo_path }}"
+    # - name: "********* npm run build *********"
+    #   command: npm run build
+    #   changed_when: false
+    #   args:
+    #     chdir: "{{ repo_path }}"
