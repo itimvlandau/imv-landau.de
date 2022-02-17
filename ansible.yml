@@ -56,13 +56,6 @@
         state: mounted
         fstype: none
 
-    # - name: "********* link node_modules to {{ home_path }}/{{ repo_initials }}_node_modules *********"
-    #   file:
-    #     src: "{{ home_path }}/{{ repo_initials }}_node_modules"
-    #     dest: "{{ repo_path }}/node_modules"
-    #     state: link
-    #     force: yes
-
     - name: "********* npm install *********"
       npm:
         path: "{{ repo_path }}"
