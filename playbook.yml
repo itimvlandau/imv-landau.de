@@ -61,8 +61,8 @@
         path: "{{ repo_path }}"
         state: present
 
-    # - name: "********* npm run build *********"
-    #   command: npm run build
-    #   changed_when: false
-    #   args:
-    #     chdir: "{{ repo_path }}"
+    - name: "********* npm run build *********"
+      command: npm run build
+      changed_when: false
+      args:
+        chdir: "{{ repo_path }}"
