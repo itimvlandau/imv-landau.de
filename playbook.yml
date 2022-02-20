@@ -2,14 +2,12 @@
 - hosts: localhost
   become: true
   become_user: root
-  gather_facts: no
+  gather_facts: no # (we don't need to check the connectivity between master and other nodes)
   vars:
-      repo_initials: imv
-      git_repo_url: https://github.com/sufius/imv-landau.git
-      repo_path: /var/www/imv-landau
-      repo_branch: main
       user: vagrant
       home_path: /home/vagrant
+      project_path: /var/www/imv-landau
+      project_initials: imv
   tasks:
     - name: "********* apt-get update *********"
       apt:
@@ -40,29 +38,29 @@
       become: true
       become_user: "{{ user }}"
       file:
-        path: "{{ home_path }}/{{ repo_initials }}_node_modules"
+        path: "{{ home_path }}/{{ project_initials }}_node_modules"
         state: directory
 
-    - name: "********* create node_modules directory in {{ repo_path }} *********"
+    - name: "********* create node_modules directory in {{ project_path }} *********"
       file:
-        path: "{{ repo_path }}/node_modules"
+        path: "{{ project_path }}/node_modules"
         state: directory
 
-    - name: "********* mount node_modules directory to {{ home_path }}/{{ repo_initials }}_node_modules *********"
+    - name: "********* mount node_modules directory to {{ home_path }}/{{ project_initials }}_node_modules *********"
       mount:
-        path: "{{ repo_path }}/node_modules"
-        src: "{{ home_path }}/{{ repo_initials }}_node_modules"
+        path: "{{ project_path }}/node_modules"
+        src: "{{ home_path }}/{{ project_initials }}_node_modules"
         opts: bind,rw
         state: mounted
         fstype: none
 
     - name: "********* npm install *********"
       npm:
-        path: "{{ repo_path }}"
+        path: "{{ project_path }}"
         state: present
 
     - name: "********* npm run build *********"
       command: npm run build
       changed_when: false
       args:
-        chdir: "{{ repo_path }}"
+        chdir: "{{ project_path }}"
