@@ -8,11 +8,39 @@
       home_path: /home/vagrant
       project_path: /var/www/imv-landau
       project_initials: imv
+      apt_packages:
+        - "htop"
+        - "git"
+        - "curl"
+        - "wget"
+        - "nginx"
+        - "nodejs"
+      npm_packages:
+        - "pm2"
+        - "@vue/cli"
+      bashrc_lines:
+        - "alias ll='ls -haltr'"
+        - "alias ..='cd ..'"
+        - "alias ...='cd ../..'"
+        - "alias imv='cd /var/www/imv-landau'"
+        - "alias www='cd /var/www/imv-landau'"
+
   tasks:
     - name: "********* apt-get update *********"
       apt:
         upgrade: "yes"
         update_cache: yes
+
+    - name: "Add alias for {{ user }}"
+      lineinfile:
+        path="{{ home_path }}/.bashrc"
+        line="{{ item }}"
+        owner="{{ user }}"
+        regexp="{{ item }}"
+        state=present
+        insertafter=EOF
+        create=True
+      with_items: "{{ bashrc_lines }}"
 
     - name: "********* download nodejs *********"
       get_url: url=https://deb.nodesource.com/setup_14.x dest=/opt mode=755
@@ -23,16 +51,13 @@
 
     - name: "********* apt install ... *********"
       apt:
-        name: ['htop', 'git', 'curl', 'wget', 'nginx', 'nodejs']
+        name: "{{ apt_packages }}"
         state: present
 
     - name: "********* npm install -g ... *********"
       npm:
         global: yes
-        name: "{{ item }}"
-      with_items:
-        - pm2
-        - '@vue/cli'
+        name: "{{ npm_packages }}"
 
     - name: "********* create node_modules directory in home *********"
       become: true
@@ -65,8 +90,8 @@
     #   args:
     #     chdir: "{{ project_path }}"
 
-    - name: "********* npm run build *********"
-      command: npm start
+    - name: "********* start server *********"
+      command: npm run serve
       changed_when: false
       args:
         chdir: "{{ project_path }}"
