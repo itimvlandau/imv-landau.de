@@ -53,8 +53,8 @@ Vagrant.configure("2") do |config|
          # sudo mkdir -p /var/www/imv-landau/node_modules
          # sudo mount --bind ~/vagrant_node_modules /var/www/imv-landau/node_modules
          cd /var/www/imv-landau
-         ansible-lint ansible.yml
-         ansible-playbook ansible.yml
+         ansible-lint ansible/dev.playbook.yml
+         ansible-playbook ansible/dev.playbook.yml
          # pm2 start pm2.config.dev.json
       SHELL
 
