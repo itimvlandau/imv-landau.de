@@ -42,10 +42,30 @@
         create=True
       with_items: "{{ bashrc_lines }}"
 
-    - name: "Source alias for {{ user }}"
-      shell: "source {{ home_path }}/.bashrc"
+    - name: "Add alias for root"
+      lineinfile:
+        path="/root/.bashrc"
+        line="{{ item }}"
+        owner="root"
+        regexp="{{ item }}"
+        state=present
+        insertafter=EOF
+        create=True
+      with_items: "{{ bashrc_lines }}"
 
-    - name: "********* download nodejs *********"
+    - name: "source {{ home_path }}/.bashrc"
+      shell: "source {{ home_path }}/.bashrc"
+      args:
+         executable: /bin/bash
+
+    - name: "source /root/.bashrc"
+      shell: "source /root/.bashrc"
+      become: true
+      become_user: root
+      args:
+         executable: /bin/bash
+
+    - name: "download nodejs **************************************************"
       get_url: url=https://deb.nodesource.com/setup_14.x dest=/opt mode=755
 
     - name: "********* setup nodejs *********"
