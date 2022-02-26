@@ -55,6 +55,7 @@ Vagrant.configure("2") do |config|
          cd /var/www/imv-landau
          ansible-lint ansible/dev.playbook.yml
          ansible-playbook ansible/dev.playbook.yml
+         # npm run serve
          # pm2 start pm2.config.dev.json
       SHELL
 
@@ -65,6 +66,7 @@ Vagrant.configure("2") do |config|
 
       VAGRANT_DISABLE_RESOLV_REPLACE=1
       imv.vm.box = "generic/ubuntu2010"
+      imv.vm.network "private_network", ip: "10.0.0.10"
       imv.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
       imv.vm.network "forwarded_port", guest: 22,   host: 22, host_ip: "127.0.0.1", id: "ssh"
       imv.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
