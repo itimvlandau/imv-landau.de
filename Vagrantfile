@@ -70,9 +70,18 @@ Vagrant.configure("2") do |config|
           imv.vm.network "forwarded_port", guest: i, host: i, host_ip: "127.0.0.1"
       end
     end
+    
+    if Vagrant::Util::Platform.windows?
+      # start fsnotify on host after the guest starts or reloads/provisions
+      config.trigger.after :up, :reload, :provision do |trigger|
+        trigger.info = "********* start fsnotify in background *********"
+        trigger.run = {inline: "bash -c 'vagrant fsnotify > fsnotify.log 2>&1 &'"}
+      end
 
-    # start fsnotify on host after the guest starts
-    config.trigger.after :up do |trigger|
-      trigger.run = {inline: "bash -c 'vagrant fsnotify > fsnotify.log 2>&1 &'"}
+      # remove fsnotify.log file
+      config.trigger.after :destroy do |trigger|
+        trigger.info = "********* removing fsnotify.log *********"
+        trigger.run = {inline: "rm  fsnotify.log"}
+      end
     end
 end
