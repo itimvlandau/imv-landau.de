@@ -41,6 +41,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.define "imv" do |imv|
       # Increase disk speed with nfs: true (Linux only)
+      # or in windows with: https://github.com/winnfsd/vagrant-winnfsd
       # imv.vm.synced_folder ".", "/home/vagrant/imv-landau", nfs: true
       # https://www.admin-wissen.de/tutorials/devops-mit-vagrant-und-chef/vagrant-und-chef-performanceoptimierung
 
