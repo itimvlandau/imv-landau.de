@@ -29,11 +29,36 @@ Vagrant.configure("2") do |config|
       config.vm.network "public_network", bridge: "#$default_network_interface"
     end
 
+    # config.trigger.after :up do |t|
+    #   t.name = "vagrant-fsnotify"
+    #   t.run = { inline: "vagrant fsnotify" }
+    # end
+
+    # start fsnotify on host after the guest starts
+    config.trigger.after :up do |trigger|
+      trigger.run = {inline: "bash -c 'vagrant fsnotify > fsnotify.log 2>&1 &'"}
+    end
+
     config.vm.define "imv" do |imv|
       # Increase disk speed with nfs: true (Linux only)
-      # imv.vm.synced_folder "./", "/home/vagrant/imv-landau", nfs: true
+      # imv.vm.synced_folder ".", "/home/vagrant/imv-landau", nfs: true
       # https://www.admin-wissen.de/tutorials/devops-mit-vagrant-und-chef/vagrant-und-chef-performanceoptimierung
-      imv.vm.synced_folder "./", "/var/www/imv-landau"
+
+imv.vm.synced_folder ".", "/vagrant", disabled: true
+# imv.vm.synced_folder ".", "/var/www/imv-landau", type: "nfs", mount_options: ["actimeo=1", "tcp", "lookupcache=none"]
+# imv.vm.synced_folder ".", "/var/www/imv-landau"
+
+# // https://github.com/adrienkohlbecker/vagrant-fsnotify
+# // vagrant plugin install vagrant-fsnotify
+imv.vm.synced_folder ".", "/var/www/imv-landau", fsnotify: true
+
+      # imv.vm.synced_folder ".", "/var/www/imv-landau"
+      # imv.vm.synced_folder ".", "/var/www/imv-landau", create: true, mount_options: ["rw", "nodev", "relatime", "iocharset=utf8", "uid=1000", "gid=1000", "dmode=777", "fmode=777"], owner: "vagrant", group: "vagrant"
+      # if Vagrant::Util::Platform.windows?
+      #     imv.vm.synced_folder ".", "/var/www/imv-landau", mount_options: ["rw", "nodev", "relatime", "iocharset=utf8", "uid=1000", "gid=1000", "dmode=777", "fmode=777"], owner: "vagrant", group: "vagrant", id: "imv"
+      # else
+      #     imv.vm.synced_folder ".", "/var/www/imv-landau", extra: "dmode=777,fmode=777", type: "nfs"
+      # end
 
       ####### Resources #######
       imv.vm.provider "virtualbox" do |vb|
