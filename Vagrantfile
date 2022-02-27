@@ -52,6 +52,7 @@ Vagrant.configure("2") do |config|
       # ####### Provision #######
       imv.vm.provision "shell", run: "always", privileged: false, inline: <<-SHELL
          sudo apt update
+         # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#confirming-your-installation
          sudo apt install yamllint ansible-lint -y
          cd /var/www/imv-landau
          ansible-lint playbooks/dev.playbook.yml
@@ -70,7 +71,7 @@ Vagrant.configure("2") do |config|
           imv.vm.network "forwarded_port", guest: i, host: i, host_ip: "127.0.0.1"
       end
     end
-    
+
     if Vagrant::Util::Platform.windows?
       # start fsnotify on host after the guest starts or reloads/provisions
       config.trigger.after :up, :reload, :provision do |trigger|
