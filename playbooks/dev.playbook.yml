@@ -26,10 +26,15 @@
         - "alias www='cd /var/www/imv-landau'"
 
   tasks:
-    - name: "********* apt-get update *********"
+    - name: Update APT package manager repositories cache
+      become: true
       apt:
-        upgrade: "yes"
         update_cache: yes
+
+    - name: Upgrade installed packages
+      become: true
+      apt:
+        upgrade: dist
 
     - name: "Add alias for {{ user }}"
       lineinfile:
