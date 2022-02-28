@@ -14,7 +14,6 @@
         - "curl"
         - "wget"
         - "nginx"
-        - "nodejs"
       npm_packages:
         - "pm2"
         - "@vue/cli"
@@ -42,7 +41,7 @@
     - name: "********* apt install ... *********"
       apt:
         name: "{{ apt_packages }}"
-        state: present
+        state: latest
 
     # bashrc
 
