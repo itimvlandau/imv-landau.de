@@ -26,7 +26,10 @@
         - "alias www='cd /var/www/imv-landau'"
 
   tasks:
-    - name: Update APT package manager repositories cache
+
+    # apt update/upgrade
+
+     - name: Update APT package manager repositories cache
       become: true
       apt:
         update_cache: yes
@@ -35,6 +38,13 @@
       become: true
       apt:
         upgrade: dist
+
+    - name: "********* apt install ... *********"
+      apt:
+        name: "{{ apt_packages }}"
+        state: present
+
+    # bashrc
 
     - name: "Add alias for {{ user }}"
       lineinfile:
@@ -70,6 +80,8 @@
       args:
          executable: /bin/bash
 
+    # nodejs
+
     - name: "download nodejs **************************************************"
       get_url: url=https://deb.nodesource.com/setup_14.x dest=/opt mode=755
 
@@ -77,16 +89,13 @@
       command: /opt/setup_14.x
       changed_when: false
 
-    - name: "********* apt install ... *********"
-      apt:
-        name: "{{ apt_packages }}"
-        state: present
-
     - name: "********* npm install -g ... *********"
       npm:
         name: "{{ item }}"
         global: yes
       with_items: "{{ npm_packages }}"
+
+    # www
 
     - name: "********* create node_modules directory in home *********"
       become: true
