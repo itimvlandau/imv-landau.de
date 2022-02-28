@@ -121,16 +121,3 @@
         path: "{{ project_path }}"
         state: present
 
-    # - name: "********* npm run build *********"
-    #   command: npm run build
-    #   changed_when: false
-    #   args:
-    #     chdir: "{{ project_path }}"
-
-    # - name: "********* start server *********"
-    #   command: npm run serve
-    #   changed_when: false
-    #   async: 42
-    #   poll: 0
-    #   args:
-    #     chdir: "{{ project_path }}"
