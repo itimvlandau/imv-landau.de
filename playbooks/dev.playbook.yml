@@ -6,14 +6,27 @@
   vars:
       user: vagrant
       home_path: /home/vagrant
-      project_path: /var/www/imv-landau
+      client_path: /var/www/imv-landau
+      api_path: /var/www/imv-landau-api
+      api_web_dir: "{{ api_path }}/web"
+      api_var_dir: "{{ api_path }}/var"
+      api_console_path: "{{ api_path }}/bin/console"
+      server_name: api.imv-landau.de
       project_initials: imv
       apt_packages:
         - "htop"
         - "git"
         - "curl"
         - "wget"
-        - "nginx"
+        - "zip"
+        - "unzip"
+      php_packages:
+        - php8-cli
+        - php8-curl
+        - php8-fpm
+        - php8-intl
+        - php8-mysql
+        - php8-xml
       npm_packages:
         - "pm2"
         - "@vue/cli"
@@ -23,6 +36,19 @@
         - "alias ...='cd ../..'"
         - "alias imv='cd /var/www/imv-landau'"
         - "alias www='cd /var/www/imv-landau'"
+
+  handlers:
+    - name: Restart Nginx
+      become: true
+      service:
+        name: nginx
+        state: restarted
+
+    - name: Restart PHP-FPM
+      become: true
+      service:
+        name: php8-fpm
+        state: restarted
 
   tasks:
 
@@ -103,14 +129,14 @@
         path: "{{ home_path }}/{{ project_initials }}_node_modules"
         state: directory
 
-    - name: "********* create node_modules directory in {{ project_path }} *********"
+    - name: "********* create node_modules directory in {{ client_path }} *********"
       file:
-        path: "{{ project_path }}/node_modules"
+        path: "{{ client_path }}/node_modules"
         state: directory
 
     - name: "********* mount node_modules directory to {{ home_path }}/{{ project_initials }}_node_modules *********"
       mount:
-        path: "{{ project_path }}/node_modules"
+        path: "{{ client_path }}/node_modules"
         src: "{{ home_path }}/{{ project_initials }}_node_modules"
         opts: bind,rw
         state: mounted
@@ -118,6 +144,131 @@
 
     - name: "********* npm install *********"
       npm:
-        path: "{{ project_path }}"
+        path: "{{ client_path }}"
         state: present
 
+    # php and nginx
+
+    - name: Install Nginx web server
+      apt:
+        name: nginx
+        state: latest
+      notify: Restart Nginx
+
+    - name: Install MySQL DB server
+      apt:
+        name: mysql-server
+        state: latest
+
+    - name: Add PHP 8 PPA repository
+      apt_repository:
+        repo: 'ppa:ondrej/php'
+
+    - name: "Install PHP packages"
+      apt:
+        name: "{{ php_packages }}"
+        state: latest
+      notify: Restart PHP-FPM
+
+    - name: Set date.timezone for CLI
+      lineinfile:
+        path: /etc/php/8/cli/php.ini
+        regexp: "date.timezone ="
+        line: "date.timezone = Europe/Berlin"
+      notify: Restart PHP-FPM
+
+    # - name: Set date.timezone for PHP
+    #   become: true
+    #   ini_file:
+    #     dest: /etc/php/8/fpm/php.ini
+    #     section: "{{ item.section }}"
+    #     option: "{{ item.option }}"
+    #     value: "{{ item.value }}"
+    #   with_items:
+    #     - { section: Date, option: date.timezone, value: Europe/Berlin }
+    #     - { section: PHP, option: max_execution_time, value: 60 }
+    #     - { section: PHP, option: memory_limit, value: 512M }
+
+    - name: Download Composer
+      script: scripts/install_composer.sh
+      tags:
+        - composer # ansible-playbook ansible/playbook.yml -i ansible/hosts.ini --skip-tags composer
+
+    - name: Move Composer globally
+      become: true
+      command: mv composer.phar /usr/local/bin/composer
+      tags:
+        - composer
+
+    - name: Set permissions on Composer
+      become: true
+      file:
+        path: /usr/local/bin/composer
+        mode: "a+x"
+      tags:
+        - composer
+
+    - name: Install Composer's dependencies
+      composer:
+        working_dir: "{{ api_path }}"
+        no_dev: no
+      tags:
+        - deploy
+
+    # - name: Check requirements
+    #   become: true
+    #   command: "php {{ api_path }}/vendor/bin/symfony_requirements"
+
+    - name: Add nginx.api.conf template file to the Nginx available sites
+      become: true
+      template:
+        src: templates/nginx.api.conf
+        dest: "/etc/nginx/sites-available/{{ server_name }}.conf"
+      notify: Restart Nginx
+
+    - name: Enable nginx.api.conf template file as an available site of Nginx
+      become: true
+      file:
+        src: "/etc/nginx/sites-available/{{ server_name }}.conf"
+        dest: "/etc/nginx/sites-enabled/{{ server_name }}.conf"
+        state: link
+      notify: Restart Nginx
+
+    - name: Add enabled Nginx site to /etc/hosts
+      become: true
+      lineinfile:
+        path: /etc/hosts
+        regexp: "{{ server_name }}"
+        line: "127.0.0.1 {{ server_name }}"
+
+    - name: Fix var directory permissions
+      file:
+        path: "{{ api_var_dir }}"
+        state: directory
+        mode: 0777
+        recurse: yes
+      changed_when: false
+      tags:
+        - permissions # ansible-playbook ansible/playbook.yml -i ansible/hosts.ini -t permissions
+
+
+    # Symfony console commands
+
+    - name: Create DB if not exists
+      command: '{{ api_console_path }} doctrine:database:create --if-not-exists'
+      register: db_create_result
+      changed_when: db_create_result.stdout is not search('already exists. Skipped')
+
+    # - debug:
+    #     var: db_create_result
+    #   tags:
+    #     - deploy
+
+    - name: Execute migrations
+      command: '{{ api_console_path }} doctrine:migrations:migrate --no-interaction'
+      register: db_migrations_result
+      changed_when: db_migrations_result.stdout is not search('No migrations to execute')
+
+    - name: Load data fixtures
+      command: '{{ api_console_path }} hautelook_alice:doctrine:fixtures:load --no-interaction'
+      changed_when: false
