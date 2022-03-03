@@ -50,6 +50,20 @@
         name: php8-fpm
         state: restarted
 
+  vars_prompt:
+    - name: api_env
+      prompt: "Enter the environment for your Symfony app (prod|dev|test)"
+      default: dev
+      private: no
+  environment:
+    SYMFONY_ENV: "{{ api_env|lower }}"
+  pre_tasks:
+    - name: Convert entered Symfony environment to lowercase
+      set_fact:
+        api_env: "{{ api_env|lower }}"
+      tags:
+        - always
+
   tasks:
 
     # apt update/upgrade
@@ -211,7 +225,7 @@
     - name: Install Composer's dependencies
       composer:
         working_dir: "{{ api_path }}"
-        no_dev: no
+        no_dev: "{{ 'yes' if ('prod' == api_env) else 'no' }}"
       tags:
         - deploy
 
@@ -272,3 +286,10 @@
     - name: Load data fixtures
       command: '{{ api_console_path }} hautelook_alice:doctrine:fixtures:load --no-interaction'
       changed_when: false
+      when: api_env != "prod"
+
+    - name: Clear cache
+      command: '{{ api_console_path }} cache:clear --env={{ api_env }}'
+      changed_when: false
+      tags:
+        - deploy
