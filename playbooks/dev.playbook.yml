@@ -203,14 +203,23 @@
     #     - { section: PHP, option: max_execution_time, value: 60 }
     #     - { section: PHP, option: memory_limit, value: 512M }
 
+    - name: Check for Composer
+      stat:
+        path: /usr/local/bin/composer
+      register: composer_stat
+      tags:
+        - deploy
+
     - name: Download Composer
       script: scripts/install_composer.sh
+      when: not composer_stat.stat.exists
       tags:
         - composer # ansible-playbook ansible/playbook.yml -i ansible/hosts.ini --skip-tags composer
 
     - name: Move Composer globally
       become: true
       command: mv composer.phar /usr/local/bin/composer
+      when: not composer_stat.stat.exists
       tags:
         - composer
 
@@ -219,6 +228,7 @@
       file:
         path: /usr/local/bin/composer
         mode: "a+x"
+      when: not composer_stat.stat.exists
       tags:
         - composer
 
