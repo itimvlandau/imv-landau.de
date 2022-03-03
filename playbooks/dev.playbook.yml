@@ -11,7 +11,6 @@
       api_web_dir: "{{ api_path }}/web"
       api_var_dir: "{{ api_path }}/var"
       api_console_path: "{{ api_path }}/bin/console"
-      server_name: api.imv-landau.de
       project_initials: imv
       apt_packages:
         - "htop"
@@ -37,26 +36,24 @@
         - "alias imv='cd /var/www/imv-landau'"
         - "alias www='cd /var/www/imv-landau'"
 
-  handlers:
-    - name: Restart Nginx
-      become: true
-      service:
-        name: nginx
-        state: restarted
+  vars_prompt:
+    - name: api_env
+      prompt: "Enter the environment for your Symfony app (prod|dev|test)"
+      default: dev
+      private: no
 
+  environment:
+    SYMFONY_ENV: "{{ api_env|lower }}"
+
+
+  handlers:
     - name: Restart PHP-FPM
       become: true
       service:
         name: php8-fpm
         state: restarted
 
-  vars_prompt:
-    - name: api_env
-      prompt: "Enter the environment for your Symfony app (prod|dev|test)"
-      default: dev
-      private: no
-  environment:
-    SYMFONY_ENV: "{{ api_env|lower }}"
+
   pre_tasks:
     - name: Convert entered Symfony environment to lowercase
       set_fact:
@@ -64,19 +61,24 @@
       tags:
         - always
 
+   - name: Update APT package manager repositories cache
+     become: true
+     apt:
+       update_cache: yes
+
+  - name: Upgrade installed packages
+    become: true
+    apt:
+      upgrade: dist
+
+
+  roles:
+    - nginx
+
+
   tasks:
 
     # apt update/upgrade
-
-     - name: Update APT package manager repositories cache
-      become: true
-      apt:
-        update_cache: yes
-
-    - name: Upgrade installed packages
-      become: true
-      apt:
-        upgrade: dist
 
     - name: "********* apt install ... *********"
       apt:
@@ -163,12 +165,6 @@
 
     # php and nginx
 
-    - name: Install Nginx web server
-      apt:
-        name: nginx
-        state: latest
-      notify: Restart Nginx
-
     - name: Install MySQL DB server
       apt:
         name: mysql-server
@@ -208,20 +204,20 @@
         path: /usr/local/bin/composer
       register: composer_stat
       tags:
-        - deploy
+        - deploy # ansible-playbook ansible/playbook.yml -i ansible/hosts.ini --skip-tags deploy
 
     - name: Download Composer
       script: scripts/install_composer.sh
       when: not composer_stat.stat.exists
       tags:
-        - composer # ansible-playbook ansible/playbook.yml -i ansible/hosts.ini --skip-tags composer
+        - deploy
 
     - name: Move Composer globally
       become: true
       command: mv composer.phar /usr/local/bin/composer
       when: not composer_stat.stat.exists
       tags:
-        - composer
+        - deploy
 
     - name: Set permissions on Composer
       become: true
@@ -230,7 +226,18 @@
         mode: "a+x"
       when: not composer_stat.stat.exists
       tags:
-        - composer
+        - deploy
+
+    # ansible-playbook ansible/playbook.yml -i ansible/hosts.ini -t deploy --verbose
+    - name: Make sure composer is at its latest version
+      composer:
+        working_dir: "{{ api_path }}"
+        command: self-update
+      when: not composer_stat.stat.exists
+      register: composer_self_update
+      changed_when: composer_self_update.stdout is not search('You are already using composer version')
+      tags:
+        - deploy
 
     - name: Install Composer's dependencies
       composer:
@@ -242,28 +249,6 @@
     # - name: Check requirements
     #   become: true
     #   command: "php {{ api_path }}/vendor/bin/symfony_requirements"
-
-    - name: Add nginx.api.conf template file to the Nginx available sites
-      become: true
-      template:
-        src: templates/nginx.api.conf
-        dest: "/etc/nginx/sites-available/{{ server_name }}.conf"
-      notify: Restart Nginx
-
-    - name: Enable nginx.api.conf template file as an available site of Nginx
-      become: true
-      file:
-        src: "/etc/nginx/sites-available/{{ server_name }}.conf"
-        dest: "/etc/nginx/sites-enabled/{{ server_name }}.conf"
-        state: link
-      notify: Restart Nginx
-
-    - name: Add enabled Nginx site to /etc/hosts
-      become: true
-      lineinfile:
-        path: /etc/hosts
-        regexp: "{{ server_name }}"
-        line: "127.0.0.1 {{ server_name }}"
 
     - name: Fix var directory permissions
       file:
