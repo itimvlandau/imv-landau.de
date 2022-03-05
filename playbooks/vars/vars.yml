@@ -1,0 +1,32 @@
+---
+user: vagrant
+home_path: /home/vagrant
+client_path: /var/www/imv-landau
+api_path: /var/www/imv-landau-api
+api_web_dir: "{{ api_path }}/web"
+api_var_dir: "{{ api_path }}/var"
+api_console_path: "{{ api_path }}/bin/console"
+project_initials: imv
+apt_packages:
+  - "htop"
+  - "git"
+  - "curl"
+  - "wget"
+  - "zip"
+  - "unzip"
+php_packages:
+  - php8-cli
+  - php8-curl
+  - php8-fpm
+  - php8-intl
+  - php8-mysql
+  - php8-xml
+npm_packages:
+  - "pm2"
+  - "@vue/cli"
+bashrc_lines:
+  - "alias ll='ls -haltr'"
+  - "alias ..='cd ..'"
+  - "alias ...='cd ../..'"
+  - "alias imv='cd /var/www/imv-landau'"
+  - "alias www='cd /var/www/imv-landau'"
