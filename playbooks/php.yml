@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  become: true
+  become_user: root
+  gather_facts: true # (we don't need to check the connectivity between master and other nodes)
+
+  pre_tasks:
+    - name: Update APT package manager repositories cache
+      become: true
+      apt:
+       update_cache: yes
+
+    - name: Upgrade installed packages
+      become: true
+      apt:
+        upgrade: dist
+
+  roles:
+    - { role: geerlingguy.php }

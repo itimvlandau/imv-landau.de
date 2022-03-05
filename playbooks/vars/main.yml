@@ -1,0 +1,53 @@
+---
+user: vagrant
+home_path: /home/vagrant
+client_path: /var/www/imv-landau
+api_path: /var/www/imv-landau-api
+api_web_dir: "{{ api_path }}/web"
+api_var_dir: "{{ api_path }}/var"
+api_console_path: "{{ api_path }}/bin/console"
+project_initials: imv
+apt_packages:
+  - "htop"
+  - "git"
+  - "curl"
+  - "wget"
+  - "zip"
+  - "unzip"
+npm_packages:
+  - "pm2"
+  - "@vue/cli"
+bashrc_lines:
+  - "alias ll='ls -haltr'"
+  - "alias ..='cd ..'"
+  - "alias ...='cd ../..'"
+  - "alias imv='cd /var/www/imv-landau'"
+  - "alias www='cd /var/www/imv-landau'"
+
+# php_packages:
+#   - php8-cli
+#   - php8-curl
+#   - php8-fpm
+#   - php8-intl
+#   - php8-mysql
+#   - php8-xml
+php_fpm_pool_user: "nginx"
+php_fpm_pool_group: "nginx"
+php_webserver_daemon: "nginx"
+php_default_version_debian: "8.0"
+php_enable_php_fpm: true
+php_fpm_enabled_on_boot: true
+php_packages_state: "latest"
+php_date_timezone: "Europe/Berlin"
+php_max_execution_time: "90"
+php_upload_max_filesize: "256M"
+php_packages:
+  - php
+  - php-cli
+  - php-common
+  - php-devel
+  - php-gd
+  - php-mbstring
+  - php-pdo
+  - php-pecl-apcu
+  - php-xml

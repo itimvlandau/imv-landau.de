@@ -4,7 +4,7 @@
   become_user: root
   gather_facts: no # (we don't need to check the connectivity between master and other nodes)
   vars_files:
-  - ./vars/vars.yml
+  - ./vars/main.yml
 
   vars_prompt:
     - name: api_env
@@ -31,10 +31,10 @@
       tags:
         - always
 
-   - name: Update APT package manager repositories cache
-     become: true
-     apt:
-       update_cache: yes
+    - name: Update APT package manager repositories cache
+      become: true
+      apt:
+        update_cache: yes
 
   - name: Upgrade installed packages
     become: true
