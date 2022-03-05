@@ -1,8 +1,8 @@
 ---
 user: vagrant
 home_path: /home/vagrant
-client_path: /var/www/imv-landau
-api_path: /var/www/imv-landau-api
+client_path: /var/www/imv-landau/client
+api_path: /var/www/imv-landau/api
 api_web_dir: "{{ api_path }}/web"
 api_var_dir: "{{ api_path }}/var"
 api_console_path: "{{ api_path }}/bin/console"
