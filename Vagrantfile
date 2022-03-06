@@ -60,7 +60,7 @@ Vagrant.configure("2") do |config|
       SHELL
 
       VAGRANT_DISABLE_RESOLV_REPLACE=1
-      imv.vm.box = "generic/ubuntu2010"
+      imv.vm.box = "generic/ubuntu2004"
       imv.vm.network "private_network", ip: "10.0.0.10"
       imv.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
       imv.vm.network "forwarded_port", guest: 22,   host: 22, host_ip: "127.0.0.1", id: "ssh"
