@@ -29,11 +29,8 @@ php_fpm_pool_group: "nginx"
 php_webserver_daemon: "nginx"
 php_default_version_debian: "7.4"
 php_enable_php_fpm: true
-php_fpm_state: stopped
-php_fpm_enabled_on_boot: false
-# php_fpm_state: started
-# php_fpm_enabled_on_boot: true
-# php_fpm_handler_state: reloaded
+php_fpm_state: started
+php_fpm_enabled_on_boot: true
 php_packages_state: "latest"
 php_date_timezone: "Europe/Berlin"
 php_max_execution_time: "90"

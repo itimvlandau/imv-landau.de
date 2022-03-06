@@ -55,8 +55,8 @@ Vagrant.configure("2") do |config|
          # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#confirming-your-installation
          sudo apt install yamllint ansible-lint -y
          cd /var/www/imv-landau
-         ansible-lint playbooks/dev.playbook.yml
-         ansible-playbook playbooks/dev.playbook.yml
+         ansible-lint playbooks/php.yml
+         ansible-playbook playbooks/php.yml
       SHELL
 
       VAGRANT_DISABLE_RESOLV_REPLACE=1

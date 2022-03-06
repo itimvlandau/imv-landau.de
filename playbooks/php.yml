@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
   gather_facts: true # (we don't need to check the connectivity between master and other nodes)
+  become: true
   vars_files:
     - ./vars/vars.yml
 
@@ -18,6 +19,29 @@
     - name: Set bashrc files
       import_tasks: tasks/bashrc.yml
 
-  roles:
-    - role: geerlingguy.php
-      become: true
+  tasks:
+    - name: Install NGINX
+      include_role:
+        name: nginxinc.nginx
+      vars:
+        nginx_debug_output: true
+        nginx_selinux: true
+        nginx_selinux_tcp_ports:
+          - 80
+          - 443
+        nginx_logrotate_conf_enable: true
+        nginx_logrotate_conf:
+          paths:
+            - /var/log/nginx/*.log
+          options:
+            - daily
+            - missingok
+            - rotate 14
+            - compress
+            - delaycompress
+            - notifempty
+            - sharedscripts
+
+    - name: Install PHP
+      include_role:
+        name: geerlingguy.php
