@@ -4,7 +4,7 @@
   become_user: root
   gather_facts: no # (we don't need to check the connectivity between master and other nodes)
   vars_files:
-    - ./vars/main.yml
+    - ./vars/vars.yml
 
   vars_prompt:
     - name: api_env
@@ -55,41 +55,8 @@
         name: "{{ apt_packages }}"
         state: latest
 
-    # bashrc
-
-    - name: "Add alias for {{ user }}"
-      lineinfile:
-        path="{{ home_path }}/.bashrc"
-        line="{{ item }}"
-        owner="{{ user }}"
-        regexp="{{ item }}"
-        state=present
-        insertafter=EOF
-        create=True
-      with_items: "{{ bashrc_lines }}"
-
-    - name: "Add alias for root"
-      lineinfile:
-        path="/root/.bashrc"
-        line="{{ item }}"
-        owner="root"
-        regexp="{{ item }}"
-        state=present
-        insertafter=EOF
-        create=True
-      with_items: "{{ bashrc_lines }}"
-
-    - name: "source {{ home_path }}/.bashrc"
-      shell: "source {{ home_path }}/.bashrc"
-      args:
-         executable: /bin/bash
-
-    - name: "source /root/.bashrc"
-      shell: "source /root/.bashrc"
-      become: true
-      become_user: root
-      args:
-         executable: /bin/bash
+    - name: Set bashrc files
+      import_tasks: tasks/bashrc.yml
 
     # nodejs
 

@@ -1,8 +1,8 @@
 ---
 - hosts: localhost
-  become: true
-  become_user: root
   gather_facts: true # (we don't need to check the connectivity between master and other nodes)
+  vars_files:
+    - ./vars/vars.yml
 
   pre_tasks:
     - name: Update APT package manager repositories cache
@@ -15,5 +15,9 @@
       apt:
         upgrade: dist
 
+    - name: Set bashrc files
+      import_tasks: tasks/bashrc.yml
+
   roles:
-    - { role: geerlingguy.php }
+    - role: geerlingguy.php
+      become: true

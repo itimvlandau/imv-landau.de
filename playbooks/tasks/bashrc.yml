@@ -1,0 +1,34 @@
+---
+- name: "Add alias for {{ user }} in {{ home_path }}"
+  lineinfile:
+    path="{{ home_path }}/.bashrc"
+    line="{{ item }}"
+    owner="{{ user }}"
+    regexp="{{ item }}"
+    state=present
+    insertafter=EOF
+    create=True
+  with_items: "{{ bashrc_lines }}"
+
+- name: "Add alias for root"
+  become: true
+  lineinfile:
+    path="/root/.bashrc"
+    line="{{ item }}"
+    owner="root"
+    regexp="{{ item }}"
+    state=present
+    insertafter=EOF
+    create=True
+  with_items: "{{ bashrc_lines }}"
+
+- name: "source {{ home_path }}/.bashrc"
+  shell: "source {{ home_path }}/.bashrc"
+  args:
+     executable: /bin/bash
+
+- name: "source /root/.bashrc"
+  shell: "source /root/.bashrc"
+  become: true
+  args:
+     executable: /bin/bash
