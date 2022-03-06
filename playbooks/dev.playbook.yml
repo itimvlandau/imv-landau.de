@@ -42,10 +42,6 @@
       upgrade: dist
 
 
-  roles:
-    - nginx
-
-
   tasks:
 
     # apt update/upgrade
