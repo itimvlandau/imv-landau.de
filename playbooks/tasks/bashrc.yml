@@ -26,9 +26,11 @@
   shell: "source {{ home_path }}/.bashrc"
   args:
      executable: /bin/bash
+  changed_when: false
 
 - name: "source /root/.bashrc"
   shell: "source /root/.bashrc"
   become: true
   args:
      executable: /bin/bash
+  changed_when: false
