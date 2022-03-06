@@ -42,6 +42,10 @@
             - notifempty
             - sharedscripts
 
+    - name: Prepare to install the correct PHP version
+      include_role:
+        name: geerlingguy.php-versions
+
     - name: Install PHP
       include_role:
         name: geerlingguy.php
