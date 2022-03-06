@@ -16,14 +16,6 @@
     SYMFONY_ENV: "{{ api_env|lower }}"
 
 
-  handlers:
-    - name: Restart PHP-FPM
-      become: true
-      service:
-        name: php8-fpm
-        state: restarted
-
-
   pre_tasks:
     - name: Convert entered Symfony environment to lowercase
       set_fact:
@@ -96,41 +88,14 @@
         path: "{{ client_path }}"
         state: present
 
-    # php and nginx
+    # mysql
 
     - name: Install MySQL DB server
       apt:
         name: mysql-server
         state: latest
 
-    - name: Add PHP 8 PPA repository
-      apt_repository:
-        repo: 'ppa:ondrej/php'
-
-    - name: "Install PHP packages"
-      apt:
-        name: "{{ php_packages }}"
-        state: latest
-      notify: Restart PHP-FPM
-
-    - name: Set date.timezone for CLI
-      lineinfile:
-        path: /etc/php/8/cli/php.ini
-        regexp: "date.timezone ="
-        line: "date.timezone = Europe/Berlin"
-      notify: Restart PHP-FPM
-
-    # - name: Set date.timezone for PHP
-    #   become: true
-    #   ini_file:
-    #     path: /etc/php/8/fpm/php.ini
-    #     section: "{{ item.section }}"
-    #     option: "{{ item.option }}"
-    #     value: "{{ item.value }}"
-    #   with_items:
-    #     - { section: Date, option: date.timezone, value: Europe/Berlin }
-    #     - { section: PHP, option: max_execution_time, value: 60 }
-    #     - { section: PHP, option: memory_limit, value: 512M }
+    # composer
 
     - name: Check for Composer
       stat:

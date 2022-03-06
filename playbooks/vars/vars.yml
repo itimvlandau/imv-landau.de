@@ -24,13 +24,6 @@ bashrc_lines:
   - "alias imv='cd /var/www/imv-landau'"
   - "alias www='cd /var/www/imv-landau'"
 
-# php_packages:
-#   - php8-cli
-#   - php8-curl
-#   - php8-fpm
-#   - php8-intl
-#   - php8-mysql
-#   - php8-xml
 php_fpm_pool_user: "nginx"
 php_fpm_pool_group: "nginx"
 php_webserver_daemon: "nginx"
