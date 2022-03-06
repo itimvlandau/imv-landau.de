@@ -1,1 +1,0 @@
-{"dependencies":[["vagrant-fsnotify",["= 0.3.2"]],["log4r",[">= 0"]],["concurrent-ruby",["~> 1.0"]],["i18n",[">= 0"]],["micromachine",[">= 2","< 4"]],["vagrant-vbguest",["= 0.30.0"]]],"checksum":"1900bff8c3ec6556ea3d3883928a24a45b814b8b7d62aea96bd4142a0d9620b6","vagrant_version":"2.2.16"}
