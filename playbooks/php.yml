@@ -53,3 +53,7 @@
     - name: Install PHP
       include_role:
         name: geerlingguy.php
+
+    - name: Install composer
+      include_role:
+        name: geerlingguy.composer
