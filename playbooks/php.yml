@@ -6,15 +6,19 @@
     - ./vars/vars.yml
 
   pre_tasks:
-    - name: Update APT package manager repositories cache
-      become: true
-      apt:
-       update_cache: yes
+    - name: Update apt cache.
+      apt: update_cache=true cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
 
-    - name: Upgrade installed packages
+    - name: Upgrade apt packages
       become: true
+      apt: upgrade=dist
+
+    - name: "Install apt packages"
       apt:
-        upgrade: dist
+        name: "{{ apt_packages }}"
+        state: latest
 
     - name: Set bashrc files
       import_tasks: tasks/bashrc.yml
