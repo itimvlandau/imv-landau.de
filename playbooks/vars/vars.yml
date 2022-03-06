@@ -7,6 +7,7 @@ api_web_dir: "{{ api_path }}/web"
 api_var_dir: "{{ api_path }}/var"
 api_console_path: "{{ api_path }}/bin/console"
 project_initials: imv
+
 apt_packages:
   - "htop"
   - "git"
@@ -14,15 +15,15 @@ apt_packages:
   - "wget"
   - "zip"
   - "unzip"
-npm_packages:
-  - "pm2"
-  - "@vue/cli"
 bashrc_lines:
   - "alias ll='ls -haltr'"
   - "alias ..='cd ..'"
   - "alias ...='cd ../..'"
   - "alias imv='cd /var/www/imv-landau'"
   - "alias www='cd /var/www/imv-landau'"
+npm_packages:
+  - "pm2"
+  - "@vue/cli"
 
 php_fpm_pool_user: "nginx"
 php_fpm_pool_group: "nginx"
