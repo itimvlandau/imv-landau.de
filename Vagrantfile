@@ -35,10 +35,10 @@ Vagrant.configure("2") do |config|
       if Vagrant::Util::Platform.windows?
         # https://github.com/adrienkohlbecker/vagrant-fsnotify
         # vagrant plugin install vagrant-fsnotify
-        imv.vm.synced_folder ".", "/var/www/imv-landau", fsnotify: true
+        imv.vm.synced_folder ".", "/var/www/imv-landau", fsnotify: true, mount_options: ["dmode=770,fmode=770"]
       else
         # Increase disk speed with nfs: true (Linux only)
-        imv.vm.synced_folder ".", "/var/www/imv-landau", nfs: true
+        imv.vm.synced_folder ".", "/var/www/imv-landau", nfs: true, mount_options: ["dmode=770,fmode=770"]
       end
 
       ####### Resources #######

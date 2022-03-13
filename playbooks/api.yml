@@ -32,8 +32,8 @@
         nginx_debug_output: true
         nginx_selinux: true
         nginx_selinux_tcp_ports:
-          - 80
-          - 443
+          - "{{ http_port_client }}"
+          - "{{ https_port_client }}"
         nginx_logrotate_conf_enable: true
         nginx_logrotate_conf:
           paths:
@@ -54,24 +54,6 @@
     - name: Install PHP
       include_role:
         name: geerlingguy.php
-
-    # remove the default nginx site
-    - name: Remove the default configuration
-      file:
-        path: "{{ nginx_config_root }}/conf.d/default.conf"
-        state: absent
-      become: true
-      become_user: root
-
-    # setup the nginx config.
-    - name: Update nginx config
-      template:
-        src: nginx.api.conf.j2
-        dest: "{{ nginx_config_root }}/conf.d/{{ api_server_name }}.conf"
-        owner: "{{ user }}"
-        mode: 0644
-      become: true
-      become_user: root
 
     - name: Install composer
       include_role:

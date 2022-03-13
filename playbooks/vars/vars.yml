@@ -27,8 +27,8 @@ npm_packages:
   - "pm2"
   - "@vue/cli"
 
-php_fpm_pool_user: "nginx"
-php_fpm_pool_group: "nginx"
+php_fpm_pool_user: "{{ user }}"
+php_fpm_pool_group: "{{ user }}"
 php_webserver_daemon: "nginx"
 nginx_config_root: /etc/nginx
 php_version: '8.0'
