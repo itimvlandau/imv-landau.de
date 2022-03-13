@@ -1,0 +1,41 @@
+user: vagrant
+home_path: /home/vagrant
+client_path: /var/www/imv-landau/client
+api_root_path: /var/www/imv-landau/api
+api_web_path: "{{ api_root_path }}/web"
+api_var_path: "{{ api_root_path }}/var"
+api_public_path: "{{ api_root_path }}/public"
+api_console_path: "{{ api_root_path }}/bin/console"
+api_server_name: localhost
+api_project_initials: imv.api
+
+apt_packages:
+  - "htop"
+  - "git"
+  - "curl"
+  - "wget"
+  - "zip"
+  - "unzip"
+bashrc_lines:
+  - "alias ll='ls -haltr'"
+  - "alias ..='cd ..'"
+  - "alias ...='cd ../..'"
+  - "alias imv='cd /var/www/imv-landau'"
+  - "alias www='cd /var/www/imv-landau'"
+npm_packages:
+  - "pm2"
+  - "@vue/cli"
+
+php_fpm_pool_user: "{{ user }}"
+php_fpm_pool_group: "{{ user }}"
+php_webserver_daemon: "nginx"
+nginx_config_root: /etc/nginx
+php_version: '8.0'
+php_default_version_debian: "{{ php_version }}"
+php_enable_php_fpm: true
+php_fpm_state: started
+php_fpm_enabled_on_boot: true
+php_packages_state: "latest"
+php_date_timezone: "Europe/Berlin"
+php_max_execution_time: "90"
+php_upload_max_filesize: "256M"
