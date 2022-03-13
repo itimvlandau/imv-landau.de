@@ -67,7 +67,7 @@
       become: true
       become_user: "{{ user }}"
       file:
-        path: "{{ home_path }}/{{ project_initials }}_node_modules"
+        path: "{{ home_path }}/{{ api_project_initials }}_node_modules"
         state: directory
 
     - name: "********* create node_modules directory in {{ client_path }} *********"
@@ -75,10 +75,10 @@
         path: "{{ client_path }}/node_modules"
         state: directory
 
-    - name: "********* mount node_modules directory to {{ home_path }}/{{ project_initials }}_node_modules *********"
+    - name: "********* mount node_modules directory to {{ home_path }}/{{ api_project_initials }}_node_modules *********"
       mount:
         path: "{{ client_path }}/node_modules"
-        src: "{{ home_path }}/{{ project_initials }}_node_modules"
+        src: "{{ home_path }}/{{ api_project_initials }}_node_modules"
         opts: bind,rw
         state: mounted
         fstype: none
@@ -129,7 +129,7 @@
     # ansible-playbook ansible/playbook.yml -i ansible/hosts.ini -t deploy --verbose
     - name: Make sure composer is at its latest version
       composer:
-        working_dir: "{{ api_path }}"
+        working_dir: "{{ api_root_path }}"
         command: self-update
       when: not composer_stat.stat.exists
       register: composer_self_update
@@ -139,18 +139,18 @@
 
     - name: Install Composer's dependencies
       composer:
-        working_dir: "{{ api_path }}"
+        working_dir: "{{ api_root_path }}"
         no_dev: "{{ 'yes' if ('prod' == api_env) else 'no' }}"
       tags:
         - deploy
 
     # - name: Check requirements
     #   become: true
-    #   command: "php {{ api_path }}/vendor/bin/symfony_requirements"
+    #   command: "php {{ api_root_path }}/vendor/bin/symfony_requirements"
 
     - name: Fix var directory permissions
       file:
-        path: "{{ api_var_dir }}"
+        path: "{{ api_var_path }}"
         state: directory
         mode: 0777
         recurse: yes

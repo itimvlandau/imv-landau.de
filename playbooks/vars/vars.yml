@@ -2,11 +2,13 @@
 user: vagrant
 home_path: /home/vagrant
 client_path: /var/www/imv-landau/client
-api_path: /var/www/imv-landau/api
-api_web_dir: "{{ api_path }}/web"
-api_var_dir: "{{ api_path }}/var"
-api_console_path: "{{ api_path }}/bin/console"
-project_initials: imv
+api_root_path: /var/www/imv-landau/api
+api_web_path: "{{ api_root_path }}/web"
+api_var_path: "{{ api_root_path }}/var"
+api_public_path: "{{ api_root_path }}/public"
+api_console_path: "{{ api_root_path }}/bin/console"
+api_server_name: localhost
+api_project_initials: imv.api
 
 apt_packages:
   - "htop"
@@ -28,6 +30,7 @@ npm_packages:
 php_fpm_pool_user: "nginx"
 php_fpm_pool_group: "nginx"
 php_webserver_daemon: "nginx"
+nginx_config_root: /etc/nginx
 php_version: '8.0'
 php_default_version_debian: "{{ php_version }}"
 php_enable_php_fpm: true
