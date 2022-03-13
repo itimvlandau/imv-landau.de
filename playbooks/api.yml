@@ -13,7 +13,8 @@
 
     - name: Upgrade apt packages
       become: true
-      apt: upgrade=dist
+      apt:
+        upgrade: dist
 
     - name: "Install apt packages"
       apt:
