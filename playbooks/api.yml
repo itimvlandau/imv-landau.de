@@ -1,12 +1,11 @@
 ---
-- hosts: localhost
-  gather_facts: true # (we don't need to check the connectivity between master and other nodes)
+- hosts: all
   become: true
-  vars_files:
-    - ./vars/vars.yml
+  gather_facts: true # (we don't need to check the connectivity between master and other nodes)
 
   pre_tasks:
     - name: Update apt cache.
+      become: true
       apt: update_cache=true cache_valid_time=600
       when: ansible_os_family == 'Debian'
       changed_when: false
@@ -17,6 +16,7 @@
         upgrade: dist
 
     - name: "Install apt packages"
+      become: true
       apt:
         name: "{{ apt_packages }}"
         state: latest
@@ -58,10 +58,3 @@
     - name: Install composer
       include_role:
         name: geerlingguy.composer
-
-    - name: Restart nginx
-      service:
-        name: nginx
-        state: restarted
-      become: true
-      become_user: root

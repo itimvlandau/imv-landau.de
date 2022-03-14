@@ -1,7 +1,6 @@
 ---
 - hosts: all
   become: true
-  become_user: root
   gather_facts: no # (we don't need to check the connectivity between master and other nodes)
 
   tasks:
