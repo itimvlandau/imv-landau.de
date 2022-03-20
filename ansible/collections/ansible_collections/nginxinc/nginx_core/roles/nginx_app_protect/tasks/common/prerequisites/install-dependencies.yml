@@ -1,0 +1,49 @@
+---
+- name: (Alpine Linux) Install package dependencies
+  apk:
+    name: "{{ nginx_app_protect_alpine_dependencies }}"
+    update_cache: true
+    state: latest  # noqa package-latest
+  when: ansible_os_family == "Alpine"
+
+- name: (Debian/Ubuntu) Install package dependencies
+  apt:
+    name: "{{ nginx_app_protect_debian_dependencies }}"
+    update_cache: true
+    state: latest  # noqa package-latest
+  when: ansible_os_family == "Debian"
+
+- name: (Amazon Linux/CentOS/RHEL) Install package dependencies
+  yum:
+    name: "{{ nginx_app_protect_redhat_dependencies }}"
+    update_cache: true
+    state: latest  # noqa package-latest
+  when: ansible_os_family == "RedHat"
+
+- name: (RHEL) Set up RHEL specific repositories
+  block:
+    - name: (RHEL) Install extended dependencies from CentOS repositories
+      yum_repository:
+        name: CentOS-7
+        baseurl: "http://ftp.heanet.ie/pub/centos/{{ ansible_distribution_major_version }}/os/$basearch/"
+        description: NGINX App Protect dependencies
+        enabled: true
+        gpgcheck: true
+        gpgkey: "http://ftp.heanet.ie/pub/centos/{{ ansible_distribution_major_version }}/os/$basearch/\
+                RPM-GPG-KEY-CentOS-{{ ansible_distribution_major_version }}"
+        state: "{{ nginx_app_protect_license_status | default ('present') }}"
+      when: not nginx_app_protect_use_rhel_subscription_repos | bool
+
+    - name: (RHEL) Install extended dependencies from RHEL subscription repositories
+      rhsm_repository:
+        name:
+          - rhel-7-server-rpms
+          - rhel-7-server-optional-rpms
+      when: nginx_app_protect_use_rhel_subscription_repos | bool
+  when: ansible_distribution == "RedHat"
+
+- name: (Amazon Linux) Set up Amazon Linux Extras repositories
+  command: "amazon-linux-extras enable {{ item }}"
+  changed_when: false
+  loop: "{{ nginx_app_protect_amazon_extras }}"
+  when: ansible_distribution == "Amazon"

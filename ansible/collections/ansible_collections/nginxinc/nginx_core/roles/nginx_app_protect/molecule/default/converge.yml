@@ -1,0 +1,23 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Install NGINX App Protect WAF
+      include_role:
+        name: ansible-role-nginx-app-protect
+      vars:
+        nginx_app_protect_license:
+          certificate: license/nginx-repo.crt
+          key: license/nginx-repo.key
+        nginx_app_protect_remove_license: false
+        nginx_app_protect_install_signatures: true
+        nginx_app_protect_install_threat_campaigns: true
+        nginx_app_protect_configure: true
+        nginx_app_protect_security_policy_file_enable: true
+        nginx_app_protect_security_policy_file:
+          - src: files/test-security-policy.json
+            dest: /etc/app_protect/conf/test-security-policy.json
+        nginx_app_protect_log_policy_file_enable: true
+        nginx_app_protect_log_policy_file:
+          - src: files/test-log-profile.json
+            dest: /etc/app_protect/conf/test-log-profile.json

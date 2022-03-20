@@ -1,0 +1,8 @@
+---
+- hosts: all
+  collections:
+    - nginxinc.nginx_core
+  tasks:
+    - name: Install NGINX
+      include_role:
+        name: nginx
