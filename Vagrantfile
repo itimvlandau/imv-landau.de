@@ -62,13 +62,13 @@ Vagrant.configure("2") do |config|
       VAGRANT_DISABLE_RESOLV_REPLACE=1
       imv.vm.box = "generic/ubuntu2004"
       imv.vm.network "private_network", ip: "10.0.0.10"
-      imv.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
-      imv.vm.network "forwarded_port", guest: 22,   host: 22, host_ip: "127.0.0.1", id: "ssh"
-      imv.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
-      imv.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
-      imv.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 5432, guest: 5432, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 22,   guest: 22, host_ip: "127.0.0.1", id: "ssh"
+      imv.vm.network "forwarded_port", host: 80,   guest: 80, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 443,  guest: 443, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 3000, guest: 3000, host_ip: "127.0.0.1"
       for i in 8000..8100
-          imv.vm.network "forwarded_port", guest: i, host: i, host_ip: "127.0.0.1"
+          imv.vm.network "forwarded_port", host: i, guest: i, host_ip: "127.0.0.1"
       end
     end
 
