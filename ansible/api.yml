@@ -145,12 +145,14 @@
             web_server_name: Ansible NGINX collection - Server two
 
     - name: Prepare to install the correct PHP version
-      include_role:
+      import_role:
         name: geerlingguy.php-versions
+      tags: php
 
     - name: Install PHP
-      include_role:
+      import_role:
         name: geerlingguy.php
+      tags: php
 
     - name: Install composer
       include_role:
