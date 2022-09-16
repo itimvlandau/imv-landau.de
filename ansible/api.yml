@@ -24,131 +24,10 @@
     - name: Set bashrc files
       import_tasks: tasks/bashrc.yml
 
-  collections:
-    - nginxinc.nginx_core
   tasks:
     - name: Install NGINX
       include_role:
         name: nginx
-
-    - name: Configure NGINX
-      include_role:
-        name: nginx_config
-      vars:
-        nginx_config_http_template_enable: true
-        nginx_config_http_template:
-          - app:
-            template_file: http/default.conf.j2
-            conf_file_name: default.conf
-            conf_file_location: /etc/nginx/conf.d/
-            servers:
-              server1:
-                listen:
-                  listen_localhost:
-                    ip: 0.0.0.0
-                    port: 80
-                    opts:
-                      - default_server
-                  listen_localhost_https:
-                    ip: 0.0.0.0
-                    port: 443
-                    ssl: false
-                    opts:
-                      - default_server
-                  listen_localhost_ipv6:
-                    ip: "[::]"
-                    port: 80
-                    opts:
-                      - default_server
-                  listen_localhost_ipv6_https:
-                    ip: "[::]"
-                    port: 443
-                    ssl: false
-                    opts:
-                      - default_server
-                server_name: localhost
-                http_error_pages:
-                  404: /404.html
-                error_page: /usr/share/nginx/html
-                access_log:
-                  - name: main
-                    location: /var/log/nginx/imv-access.log
-                reverse_proxy:
-                  locations:
-                    frontend:
-                      location: /
-                      proxy_pass: http://frontend_servers/
-                    backend:
-                      location: /api
-                      proxy_pass: http://backend_servers/
-            upstreams:
-              frontend_upstream:
-                name: frontend_servers
-                lb_method: least_conn
-                zone_name: frontend_mem_zone
-                zone_size: 64k
-                sticky_cookie: false
-                servers:
-                  frontend_server_1:
-                    address: 0.0.0.0
-                    port: 8081
-                    weight: 1
-                    health_check: max_fails=3 fail_timeout=5s
-              backend_upstream:
-                name: backend_servers
-                lb_method: least_conn
-                zone_name: backend_mem_zone
-                zone_size: 64k
-                sticky_cookie: false
-                servers:
-                  backend_server_1:
-                    address: 0.0.0.0
-                    port: 8082
-          - frontend:
-            template_file: http/default.conf.j2
-            conf_file_name: frontend_default.conf
-            conf_file_location: /etc/nginx/conf.d/
-            servers:
-              server1:
-                listen:
-                  listen_localhost:
-                    port: 8081
-                    opts: []
-                server_name: localhost
-                error_page: /usr/share/nginx/html
-                web_server:
-                  locations:
-                    frontend_site:
-                      location: /
-                      proxy_hide_headers:
-                        - X-Powered-By
-                      html_file_location: /usr/share/nginx/html
-                      html_file_name: frontend_index.html
-          - backend:
-            template_file: http/default.conf.j2
-            conf_file_name: backend_default.conf
-            conf_file_location: /etc/nginx/conf.d/
-            servers:
-              server1:
-                listen:
-                  listen_localhost:
-                    port: 8082
-                    opts: []
-                server_name: localhost
-                error_page: /usr/share/nginx/html
-                web_server:
-                  locations:
-                    backend_site:
-                      location: /api
-                    php:
-                      location: ~ \.php$
-                      html_file_location: /var/www/imv-landau/api/public
-                      autoindex: false
-                      custom_options:
-                        - fastcgi_pass  localhost:9000;
-                        - fastcgi_index index.php;
-                        - include fastcgi_params;
-                        - fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
     - name: Prepare to install the correct PHP version
       import_role:
@@ -160,6 +39,6 @@
         name: geerlingguy.php
       tags: php
 
-    - name: Install composer
-      include_role:
-        name: geerlingguy.composer
+    # - name: Install composer
+    #   include_role:
+    #     name: geerlingguy.composer
