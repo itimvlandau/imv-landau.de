@@ -37,8 +37,7 @@ Vagrant.configure("2") do |config|
         # vagrant plugin install vagrant-fsnotify
         imv.vm.synced_folder ".", "/var/www/imv-landau", fsnotify: true, mount_options: ["dmode=770,fmode=770"]
       else
-        # Increase disk speed with nfs: true (Linux only)
-        imv.vm.synced_folder ".", "/var/www/imv-landau", nfs: true, mount_options: ["dmode=770,fmode=770"]
+        imv.vm.synced_folder ".", "/var/www/imv-landau"
       end
 
       ####### Resources #######
@@ -51,24 +50,26 @@ Vagrant.configure("2") do |config|
 
       # ####### Provision #######
       imv.vm.provision "shell", run: "always", privileged: false, inline: <<-SHELL
-         sudo apt update
-         # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#confirming-your-installation
-         sudo apt install yamllint ansible-lint -y
+         sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu focal main" | sudo tee -a /etc/apt/sources.list
+         sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+         sudo apt-get update
+
+         # https://docs.ansible.com/ansible/latest/installation_guide intro_installation.html#confirming-your-installation
+         sudo apt install ansible -y
          cd /var/www/imv-landau
-         ansible-lint ansible/api.yml
-         ansible-playbook ansible/api.yml
+         sudo ansible-playbook ansible/api.yml
       SHELL
 
       VAGRANT_DISABLE_RESOLV_REPLACE=1
-      imv.vm.box = "generic/ubuntu2004"
+      imv.vm.box = "generic/debian11"
       imv.vm.network "private_network", ip: "10.0.0.10"
-      imv.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
-      imv.vm.network "forwarded_port", guest: 22,   host: 22, host_ip: "127.0.0.1", id: "ssh"
-      imv.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
-      imv.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
-      imv.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 5432, guest: 5432, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 2222, guest: 22, host_ip: "127.0.0.1", id: "ssh"
+      imv.vm.network "forwarded_port", host: 80,   guest: 80, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 443,  guest: 443, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 3000, guest: 3000, host_ip: "127.0.0.1"
       for i in 8000..8100
-          imv.vm.network "forwarded_port", guest: i, host: i, host_ip: "127.0.0.1"
+          imv.vm.network "forwarded_port", host: i, guest: i, host_ip: "127.0.0.1"
       end
     end
 
