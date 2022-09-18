@@ -1,7 +1,8 @@
 user: vagrant
 home_path: /home/vagrant
-client_path: /var/www/imv-landau/client
-api_root_path: /var/www/imv-landau/api
+domain: imv-landau
+client_path: "/var/www/{{ domain }}/client"
+api_root_path: "/var/www/{{ domain }}/api"
 api_web_path: "{{ api_root_path }}/web"
 api_var_path: "{{ api_root_path }}/var"
 api_public_path: "{{ api_root_path }}/public"
@@ -10,18 +11,18 @@ api_server_name: localhost
 api_project_initials: imv.api
 
 apt_packages:
-  - "htop"
-  - "git"
-  - "curl"
-  - "wget"
-  - "zip"
-  - "unzip"
+  - "htop=2.2.0-2build1"
+  - "git=1:2.25.1-1ubuntu3.5"
+  - "curl=7.68.0-1ubuntu2.13"
+  - "wget=1.20.3-1ubuntu2"
+  - "zip=3.0-11build1"
+  - "unzip=6.0-25ubuntu1"
 bashrc_lines:
   - "alias ll='ls -haltr'"
   - "alias ..='cd ..'"
   - "alias ...='cd ../..'"
-  - "alias imv='cd /var/www/imv-landau'"
-  - "alias www='cd /var/www/imv-landau'"
+  - "alias imv='cd /var/www/{{ domain }}'"
+  - "alias www='cd /var/www/{{ domain }}'"
 npm_packages:
   - "pm2"
   - "@vue/cli"

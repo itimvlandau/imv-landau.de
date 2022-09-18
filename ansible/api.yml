@@ -19,16 +19,12 @@
       become: true
       apt:
         name: "{{ apt_packages }}"
-        state: latest
+        state: present
 
     - name: Set bashrc files
       import_tasks: tasks/bashrc.yml
 
   tasks:
-    - name: Install NGINX
-      include_role:
-        name: nginx
-
     - name: Prepare to install the correct PHP version
       import_role:
         name: geerlingguy.php-versions
@@ -39,6 +35,41 @@
         name: geerlingguy.php
       tags: php
 
-    # - name: Install composer
-    #   include_role:
-    #     name: geerlingguy.composer
+    - name: Install NGINX
+      include_role:
+        name: geerlingguy.nginx
+      vars:
+        nginx_remove_default_vhost: true
+        nginx_user: "{{ user }}"
+        nginx_vhosts:
+          - listen: "80"
+            server_name: _  # (unused but playbook crashes without it)
+            filename: "{{ domain }}.conf"
+            root: "{{ api_public_path }}"
+            ### recommended by laravel, but has to be added/set by app
+            # add_header: "X-Frame-Options \"SAMEORIGIN\""
+            # add_header: "X-Content-Type-Options \"nosniff\""
+            # charset: "utf-8"
+            index: "index.php index.html index.htm"
+            state: "present"
+            access_log: "/var/log/nginx/{{ domain }}.log"
+            error_log: "/var/log/nginx/{{ domain }}-error.log"
+            error_page: "404 /index.php"
+            extra_parameters: |
+              location / {
+                try_files $uri $uri/ /index.php?$query_string;
+              }
+              location = /favicon.ico { access_log off; log_not_found off; }
+              location = /robots.txt  { access_log off; log_not_found off; }
+              location ~ \.php$ {
+                  fastcgi_pass 127.0.0.1:9000;
+                  fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+                  include fastcgi_params;
+              }
+              location ~ /\.(?!well-known).* {
+                  deny all;
+              }
+
+    - name: Install composer
+      include_role:
+        name: geerlingguy.composer
