@@ -1,11 +1,12 @@
 user: vagrant
 home_path: /home/vagrant
 domain: imv-landau
-client_path: "/var/www/{{ domain }}/client"
+client_root_path: "/var/www/{{ domain }}/client"
 api_root_path: "/var/www/{{ domain }}/api"
 api_web_path: "{{ api_root_path }}/web"
 api_var_path: "{{ api_root_path }}/var"
 api_public_path: "{{ api_root_path }}/public"
+client_public_path: "{{ client_root_path }}/public"
 api_console_path: "{{ api_root_path }}/bin/console"
 api_server_name: localhost
 api_project_initials: imv.api

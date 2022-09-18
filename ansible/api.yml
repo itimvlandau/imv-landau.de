@@ -41,34 +41,71 @@
       vars:
         nginx_remove_default_vhost: true
         nginx_user: "{{ user }}"
+        ### necessary for vue but already activated by default
+        # nginx_extra_http_options: |
+        #   include  /etc/nginx/mime.types;
+        #   default_type  application/octet-stream;
         nginx_vhosts:
           - listen: "80"
             server_name: _  # (unused but playbook crashes without it)
-            filename: "{{ domain }}.conf"
+            filename: "client.{{ domain }}.conf"
             root: "{{ api_public_path }}"
             ### recommended by laravel, but has to be added/set by app
             # add_header: "X-Frame-Options \"SAMEORIGIN\""
             # add_header: "X-Content-Type-Options \"nosniff\""
             # charset: "utf-8"
-            index: "index.php index.html index.htm"
             state: "present"
+            extra_parameters: |
+              location /api {
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header Host $host;
+
+                # proxy_http_version 1.1;
+                # proxy_set_header Upgrade $http_upgrade;
+                # proxy_set_header Connection 'upgrade';
+                # proxy_cache_bypass $http_upgrade;
+
+                proxy_pass http://127.0.0.1:85;
+
+                # proxy_buffer_size 128k;
+            		# proxy_buffers 4 256k;
+            		# proxy_busy_buffers_size 256k;
+              }
+              location / {
+                  root {{ client_public_path }};
+                  index index.html;
+                  try_files $uri $uri/ /index.html;
+              }
+              location = /favicon.ico { access_log off; log_not_found off; }
+              location = /robots.txt  { access_log off; log_not_found off; }
+              location ~ /\.(?!well-known).* {
+                  deny all;
+              }
+              location = /50x.html {
+                root /usr/share/nginx/html;
+              }
+            error_page: "500 502 503 504  /50x.html"
             access_log: "/var/log/nginx/{{ domain }}.log"
             error_log: "/var/log/nginx/{{ domain }}-error.log"
-            error_page: "404 /index.php"
+          - listen: "85"
+            server_name: _  # (unused but playbook crashes without it)
+            filename: "api.{{ domain }}.conf"
+            root: "{{ api_public_path }}"
+            index: "index.php index.html index.htm"
+            state: "present"
             extra_parameters: |
               location / {
                 try_files $uri $uri/ /index.php?$query_string;
               }
-              location = /favicon.ico { access_log off; log_not_found off; }
-              location = /robots.txt  { access_log off; log_not_found off; }
               location ~ \.php$ {
                   fastcgi_pass 127.0.0.1:9000;
                   fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
                   include fastcgi_params;
               }
-              location ~ /\.(?!well-known).* {
-                  deny all;
-              }
+            access_log: "/var/log/nginx/{{ domain }}.log"
+            error_log: "/var/log/nginx/{{ domain }}-error.log"
+            error_page: "404 /index.php"
 
     - name: Install composer
       include_role:
