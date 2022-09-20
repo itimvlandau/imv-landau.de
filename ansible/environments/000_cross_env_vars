@@ -24,9 +24,11 @@ bashrc_lines:
   - "alias ...='cd ../..'"
   - "alias imv='cd /var/www/{{ domain }}'"
   - "alias www='cd /var/www/{{ domain }}'"
+
+nodejs_version: "18.x"
 npm_packages:
-  - "pm2"
-  - "@vue/cli"
+  - "pm2@5.2.0"
+  - "@vue/cli@5.0.8"
 
 php_fpm_pool_user: "{{ user }}"
 php_fpm_pool_group: "{{ user }}"

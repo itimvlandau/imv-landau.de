@@ -46,7 +46,7 @@ const routes = [{
   {
     path: '/donate',
     name: 'Spenden',
-    component: () => import( /* webpackChunkName: "donate" */ '../views/Donate.vue')
+    component: () => import( /* webpackChunkName: "donatePage" */ '../views/DonatePage.vue')
   },
   {
     path: '/schedule',

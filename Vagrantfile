@@ -57,6 +57,7 @@ Vagrant.configure("2") do |config|
          # https://docs.ansible.com/ansible/latest/installation_guide intro_installation.html#confirming-your-installation
          sudo apt install ansible -y
          cd /var/www/imv-landau
+         sudo ansible-playbook ansible/client.yml
          sudo ansible-playbook ansible/api.yml
       SHELL
 

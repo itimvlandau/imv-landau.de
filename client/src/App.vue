@@ -9,7 +9,9 @@
             <v-icon>{{ link.icon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-title v-text="link.text" />
+          <v-list-item-title>
+          {{ link.text }}
+          </v-list-item-title>
         </v-list-item>
 
         <v-list-group v-else :key="link.text" no-action :prepend-icon="link.icon" :value="false">
@@ -21,7 +23,9 @@
             <v-list-item-icon>
               <v-icon>{{ sublink.icon }}</v-icon>
             </v-list-item-icon>
-            <v-list-item-title v-text="sublink.text" />
+            <v-list-item-title>
+              {{ sublink.text }}
+            </v-list-item-title>
           </v-list-item>
 
         </v-list-group>

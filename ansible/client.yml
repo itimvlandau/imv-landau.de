@@ -1,8 +1,21 @@
 ---
 - hosts: all
   become: true
-  gather_facts: no # (we don't need to check the connectivity between master and other nodes)
+  gather_facts: true # (we don't need to check the connectivity between master and other nodes)
 
   tasks:
-    - debug:
-        var: hostvars
+    - name: Install nodejs
+      import_role:
+        name: geerlingguy.nodejs
+      tags: nodejs
+
+    - name: Install pm2
+      npm:
+         name: "{{ item }}"
+         global: yes
+      with_items: "{{ npm_packages | flatten(1) }}"
+
+    - name: Install npm packages
+      npm:
+        path: "{{ client_root_path }}"
+        executable: /usr/bin/npm
