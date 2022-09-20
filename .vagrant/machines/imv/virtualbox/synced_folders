@@ -1,0 +1,1 @@
+{"virtualbox":{"/var/www/imv-landau":{"fsnotify":true,"mount_options":["dmode=770,fmode=770","uid=1000","gid=1000","_netdev"],"guestpath":"/var/www/imv-landau","hostpath":"C:/Users/Admin/imvlandau/imv-landau","disabled":false,"__vagrantfile":true}}}
