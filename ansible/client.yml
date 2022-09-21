@@ -25,18 +25,3 @@
       args:
         chdir: "{{ client_root_path }}"
       when: env == "prod"
-
-#    - name: "Run npm with: {{ npm_run_command }}"
-#      shell: "nohup {{ npm_run_command }} </dev/null >/dev/null 2>&1 &"
-#      args:
-#        chdir: "{{ client_root_path }}"
-#      register: npm_output
-#
-#
-#    - name: Write npm output to file
-#      copy:
-#        content: "{{ npm_output.stdout }}"
-#        dest: "../npm-debug.log"
-#
-#    - debug:
-#        var: npm_output.stdout

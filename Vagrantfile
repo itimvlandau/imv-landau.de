@@ -87,10 +87,4 @@ Vagrant.configure("2") do |config|
         trigger.run = {inline: "rm fsnotify.log"}
       end
     end
-
-    # remove npm.log file
-    config.trigger.after :destroy do |trigger|
-      trigger.info = "********* removing npm.log *********"
-      trigger.run = {inline: "rm npm-debug.log"}
-    end
 end
