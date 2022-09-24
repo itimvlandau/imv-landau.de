@@ -62,7 +62,7 @@ const routes = [{
   {
     path: '/statute',
     name: 'Satzung',
-    component: () => import( /* webpackChunkName: "statute" */ '../views/Statute.vue')
+    component: () => import( /* webpackChunkName: "statute" */ '../views/StatuteView.vue')
   },
   {
     path: '/imprint',
