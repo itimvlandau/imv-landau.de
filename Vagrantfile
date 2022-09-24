@@ -84,7 +84,7 @@ Vagrant.configure("2") do |config|
       # remove fsnotify.log file
       config.trigger.after :destroy do |trigger|
         trigger.info = "********* removing fsnotify.log *********"
-        trigger.run = {inline: "rm fsnotify.log"}
+        trigger.run = {inline: "rm -f fsnotify.log"}
       end
     end
 end
