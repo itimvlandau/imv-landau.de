@@ -78,7 +78,7 @@ Vagrant.configure("2") do |config|
       # start fsnotify on host after the guest starts or reloads/provisions
       config.trigger.after :up, :reload, :provision do |trigger|
         trigger.info = "********* start fsnotify in background *********"
-        trigger.run = {inline: "bash -c 'vagrant fsnotify > fsnotify.log 2>&1 &'"}
+        trigger.run = {inline: "bash -c 'vagrant fsnotify > ~/fsnotify.log 2>&1 &'"}
       end
 
       # remove fsnotify.log file
