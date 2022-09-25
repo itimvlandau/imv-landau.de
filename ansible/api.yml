@@ -26,13 +26,14 @@
 
     - name: "Install apt packages"
       apt:
+        update_cache: yes
         name: "{{ apt_packages }}"
         state: present
 
-    - name: APT | APT update
-      apt:
-        update_cache: yes
-      ignore_errors: yes
+#    - name: APT | APT update
+#      apt:
+#        update_cache: yes
+#      ignore_errors: yes
 
     # https://serverfault.com/a/839563
     # https://raymii.org/s/tutorials/Silent-automatic-apt-get-upgrade.html

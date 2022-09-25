@@ -50,19 +50,21 @@ Vagrant.configure("2") do |config|
 
       # ####### Provision #######
       imv.vm.provision "shell", run: "always", privileged: false, inline: <<-SHELL
-         sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu focal main" | sudo tee -a /etc/apt/sources.list
-         sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-         sudo apt-get update
+         # sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu focal main" | sudo tee -a /etc/apt/sources.list
+         # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+         # sudo apt-get update
+
+         export DEBIAN_FRONTEND=noninteractive && sudo apt-get update && sudo apt-get upgrade --quiet --yes --allow-unauthenticated -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" && sudo apt-get dist-upgrade --quiet --yes --allow-unauthenticated -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 
          # https://docs.ansible.com/ansible/latest/installation_guide intro_installation.html#confirming-your-installation
-         sudo apt install ansible -y
+         sudo apt install software-properties-common ansible -y
          cd /var/www/imv-landau
          sudo ansible-playbook ansible/client.yml
          sudo ansible-playbook ansible/api.yml
       SHELL
 
       VAGRANT_DISABLE_RESOLV_REPLACE=1
-      imv.vm.box = "generic/debian11"
+      imv.vm.box = "generic/ubuntu2004"
       imv.vm.network "private_network", ip: "10.0.0.10"
       imv.vm.network "forwarded_port", host: 5432, guest: 5432, host_ip: "127.0.0.1"
       imv.vm.network "forwarded_port", host: 2222, guest: 22, host_ip: "127.0.0.1", id: "ssh"
@@ -74,17 +76,17 @@ Vagrant.configure("2") do |config|
       end
     end
 
-    if Vagrant::Util::Platform.windows?
-      # start fsnotify on host after the guest starts or reloads/provisions
-      config.trigger.after :up, :reload, :provision do |trigger|
-        trigger.info = "********* start fsnotify in background *********"
-        trigger.run = {inline: "bash -c 'vagrant fsnotify > ~/fsnotify.log 2>&1 &'"}
-      end
-
-      # remove fsnotify.log file
-      config.trigger.after :destroy do |trigger|
-        trigger.info = "********* removing fsnotify.log *********"
-        trigger.run = {inline: "rm -f fsnotify.log"}
-      end
-    end
+    #if Vagrant::Util::Platform.windows?
+    #  # start fsnotify on host after the guest starts or reloads/provisions
+    #  config.trigger.after :up, :reload, :provision do |trigger|
+    #    trigger.info = "********* start fsnotify in background *********"
+    #    trigger.run = {inline: "bash -c 'vagrant fsnotify > ~/fsnotify.log 2>&1 &'"}
+    #  end
+    #
+    #  # remove fsnotify.log file
+    #  config.trigger.after :destroy do |trigger|
+    #    trigger.info = "********* removing fsnotify.log *********"
+    #    trigger.run = {inline: "rm fsnotify.log"}
+    #  end
+    #end
 end
