@@ -1,5 +1,5 @@
-user: vagrant
-home_path: /home/vagrant
+user: "{{ lookup('env','USER') }}"
+home_path: "/home/{{ lookup('env','USER') }}"
 domain: imv-landau
 client_root_path: "/var/www/{{ domain }}/client"
 api_root_path: "/var/www/{{ domain }}/api"

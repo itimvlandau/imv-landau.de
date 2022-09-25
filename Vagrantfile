@@ -59,8 +59,8 @@ Vagrant.configure("2") do |config|
          # https://docs.ansible.com/ansible/latest/installation_guide intro_installation.html#confirming-your-installation
          sudo apt install software-properties-common ansible -y
          cd /var/www/imv-landau
-         sudo ansible-playbook ansible/client.yml
-         sudo ansible-playbook ansible/api.yml
+         sudo ansible-playbook ansible/client.yml --extra-vars "user=vagrant home_path=/home/vagrant"
+         sudo ansible-playbook ansible/api.yml --extra-vars "user=vagrant home_path=/home/vagrant"
       SHELL
 
       VAGRANT_DISABLE_RESOLV_REPLACE=1
