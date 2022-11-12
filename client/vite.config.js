@@ -11,6 +11,17 @@ import {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+      proxy: {
+          '/api': {
+              target: 'http://localhost:85/api',
+              changeOrigin: true,
+              secure: false,
+              ws: true,
+              rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+  },
   plugins: [
     vue2(),
     legacy({

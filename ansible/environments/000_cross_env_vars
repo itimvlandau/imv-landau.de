@@ -9,7 +9,6 @@ api_public_path: "{{ api_root_path }}/public"
 client_public_path: "{{ client_root_path }}/dist"
 api_console_path: "{{ api_root_path }}/bin/console"
 api_server_name: localhost
-api_project_initials: imv.api
 
 apt_packages:
   - "htop"

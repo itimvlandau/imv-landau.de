@@ -59,8 +59,8 @@ Vagrant.configure("2") do |config|
          # https://docs.ansible.com/ansible/latest/installation_guide intro_installation.html#confirming-your-installation
          sudo apt install software-properties-common ansible -y
          cd /var/www/imv-landau
-         sudo ansible-playbook ansible/client.yml --extra-vars "user=vagrant home_path=/home/vagrant"
-         sudo ansible-playbook ansible/api.yml --extra-vars "user=vagrant home_path=/home/vagrant"
+         sudo ansible-playbook ansible/client.yml --extra-vars "user=$USER home_path=/home/$USER"
+         sudo ansible-playbook ansible/api.yml --extra-vars "user=$USER home_path=/home/$USER"
       SHELL
 
       VAGRANT_DISABLE_RESOLV_REPLACE=1
@@ -70,6 +70,7 @@ Vagrant.configure("2") do |config|
       imv.vm.network "forwarded_port", host: 2222, guest: 22, host_ip: "127.0.0.1", id: "ssh"
       imv.vm.network "forwarded_port", host: 80,   guest: 80, host_ip: "127.0.0.1"
       imv.vm.network "forwarded_port", host: 443,  guest: 443, host_ip: "127.0.0.1"
+      imv.vm.network "forwarded_port", host: 4443, guest: 4443, host_ip: "127.0.0.1"
       imv.vm.network "forwarded_port", host: 3000, guest: 3000, host_ip: "127.0.0.1"
       for i in 8000..8100
           imv.vm.network "forwarded_port", host: i, guest: i, host_ip: "127.0.0.1"
