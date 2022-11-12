@@ -20,6 +20,12 @@
         path: "{{ client_root_path }}"
         executable: /usr/bin/npm
 
+    - debug:
+        var: npm_run_command
+
+    - debug:
+        var: env
+
     - name: "Run npm with: {{ npm_run_command }}"
       command: "{{ npm_run_command }}"
       args:

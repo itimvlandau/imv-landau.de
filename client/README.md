@@ -1,3 +1,19 @@
+# useful commands
+
+
+run playbook (ansible 2.9):
+
+```ansible-playbook ansible/client.yml
+```
+
+debug:
+
+```tasks:
+    - debug:
+        var: npm_run_command
+```
+
+
 # my-vue-project
 
 This template should help get you started developing with Vue 3 in Vite.
