@@ -30,4 +30,4 @@
       command: "{{ npm_run_command }}"
       args:
         chdir: "{{ client_root_path }}"
-      # when: env == "prod"
+      when: env == "prod"
