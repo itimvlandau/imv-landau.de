@@ -13,6 +13,9 @@ debug:
         var: npm_run_command
 ```
 
+install new role (go to project root)
+```ansible-galaxy install geerlingguy.certbot
+```
 
 # my-vue-project
 
