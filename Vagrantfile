@@ -35,15 +35,15 @@ Vagrant.configure("2") do |config|
       if Vagrant::Util::Platform.windows?
         # https://github.com/adrienkohlbecker/vagrant-fsnotify
         # vagrant plugin install vagrant-fsnotify
-        imv.vm.synced_folder ".", "/var/www/imv-landau", fsnotify: true, mount_options: ["dmode=770,fmode=770"]
+        imv.vm.synced_folder ".", "/var/www/imv-landau.de", fsnotify: true, mount_options: ["dmode=770,fmode=770"]
       else
-        imv.vm.synced_folder ".", "/var/www/imv-landau"
+        imv.vm.synced_folder ".", "/var/www/imv-landau.de"
       end
 
       ####### Resources #######
       imv.vm.provider "virtualbox" do |vb|
          vb.gui = false
-         vb.name = "imv-landau"
+         vb.name = "imv-landau.de"
          vb.memory = 3000
          vb.cpus = 4
       end
@@ -58,7 +58,7 @@ Vagrant.configure("2") do |config|
 
          # https://docs.ansible.com/ansible/latest/installation_guide intro_installation.html#confirming-your-installation
          sudo apt install software-properties-common ansible -y
-         cd /var/www/imv-landau
+         cd /var/www/imv-landau.de
          sudo ansible-playbook ansible/client.yml --extra-vars "user=$USER home_path=/home/$USER"
          sudo ansible-playbook ansible/api.yml --extra-vars "user=$USER home_path=/home/$USER"
       SHELL

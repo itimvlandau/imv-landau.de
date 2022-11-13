@@ -1,6 +1,6 @@
 user: "{{ lookup('env','USER') }}"
 home_path: "/home/{{ lookup('env','USER') }}"
-domain: imv-landau
+domain: "imv-landau.de"
 client_root_path: "/var/www/{{ domain }}/client"
 api_root_path: "/var/www/{{ domain }}/api"
 api_web_path: "{{ api_root_path }}/web"
@@ -8,7 +8,7 @@ api_var_path: "{{ api_root_path }}/var"
 api_public_path: "{{ api_root_path }}/public"
 client_public_path: "{{ client_root_path }}/dist"
 api_console_path: "{{ api_root_path }}/bin/console"
-api_server_name: localhost
+api_server_name: "localhost"
 
 apt_packages:
   - "htop"
@@ -26,19 +26,33 @@ bashrc_lines:
 
 nodejs_version: "18.x"
 npm_packages:
-  - "pm2@5.2.0"
   - "@vue/cli@5.0.8"
+#  - "pm2@5.2.0"
 
 php_fpm_pool_user: "{{ user }}"
 php_fpm_pool_group: "{{ user }}"
 php_webserver_daemon: "nginx"
-nginx_config_root: /etc/nginx
+nginx_config_root: "/etc/nginx"
 php_version: '8.0'
 php_default_version_debian: "{{ php_version }}"
 php_enable_php_fpm: true
-php_fpm_state: started
+php_fpm_state: "started"
 php_fpm_enabled_on_boot: true
 php_packages_state: "latest"
 php_date_timezone: "Europe/Berlin"
 php_max_execution_time: "90"
 php_upload_max_filesize: "256M"
+
+# certbot_create_method: standalone
+certbot_install_method: "snap"
+certbot_admin_email: "s.aburab@gmail.com"
+certbot_create_if_missing: true
+certbot_create_standalone_stop_services:
+  - "nginx"
+certbot_auto_renew: true
+certbot_auto_renew_user: root
+certbot_auto_renew_options: --no-self-upgrade
+#certbot_auto_renew_options: --quiet --no-self-upgrade --pre-hook "systemctl stop nginx" --post-hook "systemctl start nginx"
+certbot_certs:
+  - domains:
+    - "{{ domain }}"
