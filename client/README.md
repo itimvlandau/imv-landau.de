@@ -2,13 +2,20 @@
 
 installation:
 
-sudo apt-get install -y git software-properties-common 
+sudo apt-get install -y git software-properties-common
+
 sudo apt-add-repository --yes ppa:ansible/ansible
+
 sudo apt update
+
 sudo apt install ansible -y
+
 cd /var/www/imv-landau.de
+
 ansible-playbook ansible/client.yml
+
 ansible-playbook ansible/api.yml
+
 
 run playbook (ansible 2.9):
 
@@ -24,7 +31,8 @@ debug:
 
 install new role (go to project root):
 
-```ansible-galaxy install geerlingguy.certbot
+```
+ansible-galaxy install geerlingguy.certbot
 ```
 
 # my-vue-project
