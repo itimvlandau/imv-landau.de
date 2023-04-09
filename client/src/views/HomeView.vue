@@ -32,6 +32,9 @@
         </div>
       </div>
     </div>
+    <div class="d-flex mt-6">
+      <iframe src="https://mawaqit.net/fr/w/moschee-abu-bakar-landau-in-der-pfalz-76829-germany?showOnly5PrayerTimes=0" style="width:100%; min-height: 908px;" frameborder="0" />
+    </div>
   </main>
 </template>
 
