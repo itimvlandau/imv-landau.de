@@ -1,5 +1,5 @@
 <template>
-  <main class="ma-4">
+  <main class="ma-4 fill-height">
     <v-img
       class="d-flex mx-auto mt-6 mb-4"
       :src="'src/assets/bismillah-03.png'"
@@ -32,9 +32,8 @@
         </div>
       </div>
     </div>
-    <div class="d-flex mt-6">
-      <iframe src="https://mawaqit.net/fr/w/moschee-abu-bakar-landau-in-der-pfalz-76829-germany?showOnly5PrayerTimes=0" style="width:100%; min-height: 908px;" frameborder="0" />
-    </div>
+    <iframe class="d-inline-flex d-sm-inline-flex d-md-none my-6 fill-height"  width="100%" src="https://mawaqit.net/en/m/moschee-abu-bakar-landau-in-der-pfalz-76829-germany?showNotification=0&showSearchButton=0&showFooter=0&showFlashMessage=0&view=mobile" frameborder="0" scrolling="no"/>
+    <iframe class="d-none d-md-inline-flex my-6 fill-height" width="100%" src="https://mawaqit.net/en/w/moschee-abu-bakar-landau-in-der-pfalz-76829-germany?showOnly5PrayerTimes=0" frameborder="0" scrolling="no" />
   </main>
 </template>
 
