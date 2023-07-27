@@ -23,6 +23,8 @@ bashrc_lines:
   - "alias ...='cd ../..'"
   - "alias imv='cd /var/www/{{ domain }}'"
   - "alias www='cd /var/www/{{ domain }}'"
+  - "alias api='cd /var/www/{{ domain }}/api'"
+  - "alias cli='cd /var/www/{{ domain }}/client'"
 
 nodejs_version: "18.x"
 npm_packages:
