@@ -1,3 +1,3 @@
-http_port_client: 8080
+http_port_client: 3000
 https_port_client: 4443
-npm_run_command: npm run dev
+npm_run_command: npm start
