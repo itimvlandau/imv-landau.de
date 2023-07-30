@@ -19,6 +19,7 @@
       npm:
         path: "{{ client_root_path }}"
         executable: /usr/bin/npm
+      become_user: "{{ user }}"
 
     - debug:
         var: npm_run_command
