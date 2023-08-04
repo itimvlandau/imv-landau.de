@@ -1,19 +1,27 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
 // A custom theme for this app
-const theme = createTheme({
+let theme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
-      main: '#556cd6',
+      light: '#A0D7AD',
+      main: '#7D957F',
+      dark: '#5D5D5D',
     },
     secondary: {
-      main: '#19857b',
-    },
-    error: {
-      main: red.A400,
+      light: '#ECE8C9',
+      main: '#DFD691',
+      dark: '#A79C44',
     },
   },
+  shape: {
+    borderRadius: 0,
+  },
+  direction: 'ltr',
 });
+
+theme = responsiveFontSizes(theme);
 
 export default theme;
