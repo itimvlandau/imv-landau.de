@@ -2,6 +2,7 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { ReactComponent as ImvLogo } from "./assets/imv-logo.svg";
+import { ReactComponent as ImvLogoWhite } from "./assets/imv-logo-white.svg";
 import AppBar from '@mui/material/AppBar';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -16,6 +17,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import theme from './theme';
 
 const drawerWidth = 240;
 
@@ -28,7 +30,21 @@ export default function App() {
 
   const drawer = (
     <div>
-      <Toolbar />
+      <Toolbar sx={{
+        [theme.breakpoints.up('xs')]: {
+          p: 0
+        }
+      }}>
+          <ImvLogo />
+          <Box sx={{ ml: 1, flexDirection: 'column'}}>
+            <Typography variant="subtitle2">
+              IMV-Landau e. V.
+            </Typography>
+            <Typography variant="subtitle1" fontWeight="bold">
+            مسجد ابو بكر الصديق
+            </Typography>
+          </Box>
+        </Toolbar>
       <Divider />
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
@@ -73,13 +89,23 @@ export default function App() {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ display: { sm: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography>
+          <Box sx={{
+            display: { xs: 'flex', sm: 'none' }
+          }}>
+            <ImvLogoWhite height="45px" />
+            <Box sx={{ ml: 1, flexDirection: 'column'}}>
+              <Typography variant="subtitle2" display="block">
+                IMV-Landau e. V.
+              </Typography>
+              <Typography variant="subtitle1" fontWeight="bold" display="block">
+              مسجد ابو بكر الصديق
+              </Typography>
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box
@@ -119,7 +145,20 @@ export default function App() {
       >
         <Toolbar />
         <Container maxWidth="lg">
-          <ImvLogo height="64px" />
+        <Typography paragraph>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
+          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
+          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
+          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
+          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
+          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
+          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
+          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
+          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
+          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
+          sapien faucibus et molestie ac.
+        </Typography>
         </Container>
       </Box>
     </Box>
