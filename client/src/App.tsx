@@ -84,18 +84,10 @@ export default function App() {
         }}
       >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Box sx={{
-            display: { xs: 'flex', sm: 'none' }
-          }}>
+              display: { xs: 'flex', sm: 'none' }, flexGrow: 1
+            }}
+          >
             <ImvLogoWhite height="45px" />
             <Box sx={{ ml: 1, flexDirection: 'column'}}>
               <Typography variant="subtitle2" display="block">
@@ -106,6 +98,15 @@ export default function App() {
               </Typography>
             </Box>
           </Box>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerToggle}
+            sx={{ mr:0, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Box
