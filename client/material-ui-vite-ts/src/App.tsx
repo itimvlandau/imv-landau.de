@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { ReactComponent as ImvLogo } from "./assets/imv-logo.svg";
+import { ReactComponent as ImvLogoWhite } from "./assets/imv-logo-white.svg";
 import AppBar from '@mui/material/AppBar';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -34,6 +36,7 @@ export default function App() {
           p: 0
         }
       }}>
+          <ImvLogo />
           <Box sx={{ ml: 1, flexDirection: 'column'}}>
             <Typography variant="subtitle2">
               IMV-Landau e. V.
@@ -86,6 +89,7 @@ export default function App() {
               display: { xs: 'flex', sm: 'none' }, flexGrow: 1
             }}
           >
+            <ImvLogoWhite height="45px" />
             <Box sx={{ ml: 1, flexDirection: 'column'}}>
               <Typography variant="subtitle2" display="block">
                 IMV-Landau e. V.
