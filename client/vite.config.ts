@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from "url";
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
@@ -12,7 +13,10 @@ export default defineConfig({
       },
     }),
   ],
-  optimizeDeps: {
-      include: ["@emotion/react", "@emotion/styled", "@mui/material", "@mui/icons-material"],
+  resolve: {
+    alias: [
+      { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+      { find: '@assets', replacement: fileURLToPath(new URL('./src/assets', import.meta.url)) },
+    ],
   },
 });
