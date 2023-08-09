@@ -8,7 +8,6 @@ import AppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -17,11 +16,22 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Collapse from "@mui/material/Collapse";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import SendIcon from "@mui/icons-material/Send";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
+import InfoIcon from '@mui/icons-material/Info';
+import EuroIcon from '@mui/icons-material/EuroSymbol';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import LocationIcon from '@mui/icons-material/LocationOn';
+import { 
+  FaMoon, 
+  FaMosque, 
+  FaFileContract, 
+  FaHands
+} from "react-icons/fa";
+import { 
+  ImSection
+} from "react-icons/im";
 import theme from "./theme";
 
 const drawerWidth = 240;
@@ -43,14 +53,14 @@ export default function Root() {
       <List component="nav" aria-labelledby="nested-list-subheader">
         <ListItemButton component={Link} to="/">
           <ListItemIcon>
-            <SendIcon />
+            <FaMosque />
           </ListItemIcon>
           <ListItemText primary="Startseite" />
         </ListItemButton>
 
         <ListItemButton component={Link} to="/news">
           <ListItemIcon>
-            <DraftsIcon />
+            <InfoIcon />
           </ListItemIcon>
           <ListItemText primary="Neuigkeiten" />
         </ListItemButton>
@@ -61,7 +71,7 @@ export default function Root() {
           onClick={handleClickIslamSubmenu}
         >
           <ListItemIcon>
-            <InboxIcon />
+            <FaMoon  />
           </ListItemIcon>
           <ListItemText primary="Islam" />
           {openIslamSubmenu ? <ExpandLess /> : <ExpandMore />}
@@ -108,42 +118,42 @@ export default function Root() {
 
         <ListItemButton component={Link} to="/prayer">
           <ListItemIcon>
-            <SendIcon />
+            <FaHands />
           </ListItemIcon>
           <ListItemText primary="Gebet" />
         </ListItemButton>
 
         <ListItemButton component={Link} to="/donate">
           <ListItemIcon>
-            <DraftsIcon />
+            <EuroIcon />
           </ListItemIcon>
           <ListItemText primary="Spenden" />
         </ListItemButton>
 
         <ListItemButton component={Link} to="/schedule">
           <ListItemIcon>
-            <SendIcon />
+            <ScheduleIcon />
           </ListItemIcon>
           <ListItemText primary="Aktivitäten" />
         </ListItemButton>
 
         <ListItemButton component={Link} to="/location">
           <ListItemIcon>
-            <DraftsIcon />
+            <LocationIcon />
           </ListItemIcon>
           <ListItemText primary="Kontakt" />
         </ListItemButton>
 
         <ListItemButton component={Link} to="/statute">
           <ListItemIcon>
-            <SendIcon />
+            <FaFileContract />
           </ListItemIcon>
           <ListItemText primary="Satzung" />
         </ListItemButton>
 
         <ListItemButton component={Link} to="/imprint">
           <ListItemIcon>
-            <DraftsIcon />
+            <ImSection />
           </ListItemIcon>
           <ListItemText primary="Impressum" />
         </ListItemButton>
