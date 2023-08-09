@@ -10,5 +10,9 @@ export default defineConfig({
       svgrOptions: {
         // svgr options
       },
-    }),],
+    }),
+  ],
+  optimizeDeps: {
+      include: ["@emotion/react", "@emotion/styled", "@mui/material", "@mui/icons-material"],
+  },
 });
