@@ -42,24 +42,22 @@ const router = createBrowserRouter([
       {
         path: "/islam",
         element: <IslamPage />,
-        children: [
-          {
-            path: "/islam/prophets",
-            element: <IslamProphetsPage />,
-          },
-          {
-            path: "/islam/sense-of-life",
-            element: <IslamSenseOfLivePage />,
-          },
-          {
-            path: "/islam/women-and-islam",
-            element: <IslamWomenPage />,
-          },
-          {
-            path: "/islam/noble-quran",
-            element: <IslamKoranPage />,
-          },
-        ],
+      },
+      {
+        path: "/islam/prophets",
+        element: <IslamProphetsPage />,
+      },
+      {
+        path: "/islam/sense-of-life",
+        element: <IslamSenseOfLivePage />,
+      },
+      {
+        path: "/islam/women",
+        element: <IslamWomenPage />,
+      },
+      {
+        path: "/islam/koran",
+        element: <IslamKoranPage />,
       },
       {
         path: "/prayer",

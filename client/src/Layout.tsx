@@ -1,24 +1,21 @@
 import * as React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { ReactComponent as ImvLogo } from "./assets/imv-logo.svg";
-import { ReactComponent as ImvLogoWhite } from "./assets/imv-logo-white.svg";
+import { ReactComponent as ImvLogo } from "@/assets/imv-logo.svg";
+import { ReactComponent as ImvLogoWhite } from "@/assets/imv-logo-white.svg";
 import AppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import ListSubheader from "@mui/material/ListSubheader";
 import Collapse from "@mui/material/Collapse";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import SendIcon from "@mui/icons-material/Send";
@@ -31,66 +28,131 @@ const drawerWidth = 240;
 
 export default function Root() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [open, setOpen] = React.useState(true);
+  const [openIslamSubmenu, setOpenIslamSubmenu] = React.useState(true);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleClickIslamSubmenu = () => {
+    setOpenIslamSubmenu(!openIslamSubmenu);
   };
 
   const list = (
-    <List
-      sx={{ width: "100%", maxWidth: drawerWidth, bgcolor: "background.paper" }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          Nested List Items
-        </ListSubheader>
-      }
-    >
-      <ListItemButton>
-        <ListItemIcon>
-          <SendIcon />
-        </ListItemIcon>
-        <ListItemText primary="Sent mail" />
-      </ListItemButton>
+    <>
+      <List component="nav" aria-labelledby="nested-list-subheader">
+        <ListItemButton component={Link} to="/">
+          <ListItemIcon>
+            <SendIcon />
+          </ListItemIcon>
+          <ListItemText primary="Startseite" />
+        </ListItemButton>
 
-      <ListItemButton>
-        <ListItemIcon>
-          <DraftsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Drafts" />
-      </ListItemButton>
+        <ListItemButton component={Link} to="/news">
+          <ListItemIcon>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Neuigkeiten" />
+        </ListItemButton>
 
-      <ListItemButton onClick={handleClick}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary="Inbox" />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
+        <ListItemButton
+          component={Link}
+          to="/islam/"
+          onClick={handleClickIslamSubmenu}
+        >
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Islam" />
+          {openIslamSubmenu ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={openIslamSubmenu} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              component={Link}
+              to="/islam/prophets"
+              sx={{ pl: 4 }}
+            >
+              <ListItemIcon>
+                <StarBorder />
+              </ListItemIcon>
+              <ListItemText primary="Die Propheten" />
+            </ListItemButton>
 
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="Starred" />
-          </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/islam/sense-of-life"
+              sx={{ pl: 4 }}
+            >
+              <ListItemIcon>
+                <StarBorder />
+              </ListItemIcon>
+              <ListItemText primary="Der Sinn des Lebens" />
+            </ListItemButton>
 
-        </List>
-      </Collapse>
-    </List>
+            <ListItemButton component={Link} to="/islam/women" sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <StarBorder />
+              </ListItemIcon>
+              <ListItemText primary="Frauen im Islam" />
+            </ListItemButton>
+
+            <ListItemButton component={Link} to="/islam/koran" sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <StarBorder />
+              </ListItemIcon>
+              <ListItemText primary="Der edle Koran" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+
+        <ListItemButton component={Link} to="/prayer">
+          <ListItemIcon>
+            <SendIcon />
+          </ListItemIcon>
+          <ListItemText primary="Gebet" />
+        </ListItemButton>
+
+        <ListItemButton component={Link} to="/donate">
+          <ListItemIcon>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Spenden" />
+        </ListItemButton>
+
+        <ListItemButton component={Link} to="/schedule">
+          <ListItemIcon>
+            <SendIcon />
+          </ListItemIcon>
+          <ListItemText primary="Aktivitäten" />
+        </ListItemButton>
+
+        <ListItemButton component={Link} to="/location">
+          <ListItemIcon>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Kontakt" />
+        </ListItemButton>
+
+        <ListItemButton component={Link} to="/statute">
+          <ListItemIcon>
+            <SendIcon />
+          </ListItemIcon>
+          <ListItemText primary="Satzung" />
+        </ListItemButton>
+
+        <ListItemButton component={Link} to="/imprint">
+          <ListItemIcon>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Impressum" />
+        </ListItemButton>
+      </List>
+    </>
   );
 
   const drawer = (
-    <div>
+    <>
       <Toolbar
         sx={{
           [theme.breakpoints.up("xs")]: {
@@ -108,20 +170,7 @@ export default function Root() {
       </Toolbar>
       <Divider />
       {list}
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </div>
+    </>
   );
 
   return (
