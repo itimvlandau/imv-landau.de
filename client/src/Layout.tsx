@@ -19,19 +19,12 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
-import InfoIcon from '@mui/icons-material/Info';
-import EuroIcon from '@mui/icons-material/EuroSymbol';
-import ScheduleIcon from '@mui/icons-material/Schedule';
-import LocationIcon from '@mui/icons-material/LocationOn';
-import { 
-  FaMoon, 
-  FaMosque, 
-  FaFileContract, 
-  FaHands
-} from "react-icons/fa";
-import { 
-  ImSection
-} from "react-icons/im";
+import InfoIcon from "@mui/icons-material/Info";
+import EuroIcon from "@mui/icons-material/EuroSymbol";
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import LocationIcon from "@mui/icons-material/LocationOn";
+import { FaMoon, FaMosque, FaFileContract, FaHands } from "react-icons/fa";
+import { ImSection } from "react-icons/im";
 import theme from "./theme";
 
 const drawerWidth = 240;
@@ -71,7 +64,7 @@ export default function Root() {
           onClick={handleClickIslamSubmenu}
         >
           <ListItemIcon>
-            <FaMoon  />
+            <FaMoon />
           </ListItemIcon>
           <ListItemText primary="Islam" />
           {openIslamSubmenu ? <ExpandLess /> : <ExpandMore />}
@@ -192,7 +185,7 @@ export default function Root() {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar>
+        <Toolbar disableGutters>
           <Box
             sx={{
               display: { xs: "flex", sm: "none" },
@@ -201,11 +194,12 @@ export default function Root() {
           >
             <ImvLogoWhite height="45px" />
             <Box sx={{ ml: 1, flexDirection: "column" }}>
-              <Typography variant="subtitle2" display="block">
-                IMV-Landau e. V.
+              <Typography variant="caption" display="block" noWrap>
+                IMV-Landau e. V. - Islamischer multikultureller Verein Landau
+                (Pfalz)
               </Typography>
-              <Typography variant="subtitle1" fontWeight="bold" display="block">
-                مسجد ابو بكر الصديق
+              <Typography variant="body1" fontWeight="bold" display="block">
+                الجمعية الاسلامية للثقافات المتعددة مسجد ابي بكر الصديق
               </Typography>
             </Box>
           </Box>
@@ -214,10 +208,18 @@ export default function Root() {
             aria-label="open drawer"
             edge="end"
             onClick={handleDrawerToggle}
-            sx={{ mr: 0, display: { sm: "none" } }}
+            sx={{ mr: 1, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
+          <Box sx={{ ml: 1.5, flexDirection: "column" }}>
+            <Typography variant="subtitle2" display="block" noWrap>
+              Islamischer multikultureller Verein Landau (Pfalz)
+            </Typography>
+            <Typography variant="subtitle1" fontWeight="bold" display="block">
+              الجمعية الاسلامية للثقافات المتعددة
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box
