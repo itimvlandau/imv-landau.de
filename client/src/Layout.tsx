@@ -156,21 +156,7 @@ export default function Root() {
 
   const drawer = (
     <>
-      <Toolbar
-        sx={{
-          [theme.breakpoints.up("xs")]: {
-            p: 0,
-          },
-        }}
-      >
-        <ImvLogo />
-        <Box sx={{ ml: 1, flexDirection: "column" }}>
-          <Typography variant="subtitle2">IMV-Landau e. V.</Typography>
-          <Typography variant="subtitle1" fontWeight="bold">
-            مسجد ابو بكر الصديق
-          </Typography>
-        </Box>
-      </Toolbar>
+      <Toolbar />
       <Divider />
       {list}
     </>
@@ -186,14 +172,17 @@ export default function Root() {
         }}
       >
         <Toolbar disableGutters>
-          <Box
-            sx={{
-              display: { xs: "flex", sm: "none" },
-              flexGrow: 1,
-            }}
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerToggle}
+            sx={{ ml:1, mr: 0, display: { sm: "none" } }}
           >
-            <ImvLogoWhite height="45px" />
-            <Box sx={{ ml: 1, flexDirection: "column" }}>
+            <MenuIcon />
+          </IconButton>
+          <ImvLogoWhite height="45px" />
+          <Box sx={{ ml: 1, flexDirection: "column" }}>
               <Typography variant="caption" display="block" noWrap>
                 IMV-Landau e. V. - Islamischer multikultureller Verein Landau
                 (Pfalz)
@@ -202,24 +191,6 @@ export default function Root() {
                 الجمعية الاسلامية للثقافات المتعددة مسجد ابي بكر الصديق
               </Typography>
             </Box>
-          </Box>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 1, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ ml: 1.5, flexDirection: "column" }}>
-            <Typography variant="subtitle2" display="block" noWrap>
-              Islamischer multikultureller Verein Landau (Pfalz)
-            </Typography>
-            <Typography variant="subtitle1" fontWeight="bold" display="block">
-              الجمعية الاسلامية للثقافات المتعددة
-            </Typography>
-          </Box>
         </Toolbar>
       </AppBar>
       <Box
