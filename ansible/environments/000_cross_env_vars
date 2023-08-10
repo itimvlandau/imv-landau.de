@@ -6,7 +6,7 @@ api_root_path: "/var/www/{{ domain }}/api"
 api_web_path: "{{ api_root_path }}/public"
 api_var_path: "{{ api_root_path }}/var"
 api_public_path: "{{ api_root_path }}/public"
-client_public_path: "{{ client_root_path }}/build"
+client_public_path: "{{ client_root_path }}/dist"
 api_console_path: "{{ api_root_path }}/bin/console"
 api_server_name: "localhost"
 
@@ -45,7 +45,8 @@ php_max_execution_time: "90"
 php_upload_max_filesize: "256M"
 
 # certbot_create_method: standalone
-certbot_install_method: "snap"
+# Available options: 'package', 'snap', 'source'.
+certbot_install_method: 'package'
 certbot_admin_email: "s.aburab@gmail.com"
 certbot_create_if_missing: true
 certbot_create_standalone_stop_services:
