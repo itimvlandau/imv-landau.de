@@ -183,11 +183,11 @@ export default function Root() {
           </IconButton>
           <ImvLogoWhite height="45px" />
           <Box sx={{ ml: 1, flexDirection: "column" }}>
-              <Typography variant="caption" display="block" noWrap>
+              <Typography variant="caption" display="block">
                 IMV-Landau e. V. - Islamischer multikultureller Verein Landau
                 (Pfalz)
               </Typography>
-              <Typography variant="body1" fontWeight="bold" display="block">
+              <Typography variant="caption" fontWeight="bold" display="block" gutterBottom>
                 الجمعية الاسلامية للثقافات المتعددة مسجد ابي بكر الصديق
               </Typography>
             </Box>
