@@ -62,7 +62,24 @@ export default function Home() {
           </Typography>
         </Grid>
       </Grid>
-      <Box component={'iframe'} sx={{ minHeight: ['40vw', '28vw', '34vw', '35vw', '530px'], width: '100%'}}  src="https://mawaqit.net/en/w/moschee-abu-bakar-landau-in-der-pfalz-76829-germany?showOnly5PrayerTimes=0"  />
+      <Box
+        component={"iframe"}
+        sx={{
+          display: ["none", "block"],
+          minHeight: ["40vw", "28vw", "34vw", "35vw", "530px"],
+          width: "100%",
+        }}
+        src="https://mawaqit.net/en/w/moschee-abu-bakar-landau-in-der-pfalz-76829-germany?showOnly5PrayerTimes=0"
+      />
+      <Box
+        component={"iframe"}
+        sx={{
+          display: ["block", "none"],
+          minHeight: "590px",
+          width: "100%",
+        }}
+        src="https://mawaqit.net/en/m/moschee-abu-bakar-landau-in-der-pfalz-76829-germany?showNotification=0&showSearchButton=0&showFooter=0&showFlashMessage=0&view=mobile"
+      />
     </>
   );
 }
