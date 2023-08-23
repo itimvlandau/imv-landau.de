@@ -102,7 +102,7 @@
             filename: "client.{{ domain }}.80.conf"
           - listen: "443 ssl http2"
             server_name: _  # (unused but playbook crashes without it)
-            root: "{{ client_public_path }}"
+            root: "{{ playmobox_public_path }}"
             filename: "client.{{ domain }}.443.conf"
             ### recommended by laravel, but has to be added/set by app
             # add_header: "X-Frame-Options \"SAMEORIGIN\""
@@ -112,7 +112,7 @@
             extra_parameters: |
               sendfile {{ 'off' if env == 'dev' else 'on' }};
               location /admin {
-                alias /var/www/{{ domain }}/public;
+                alias {{ playmobox_public_path }}/;
                 index index.html;
                 try_files $uri $uri/ /index.html;
               }
@@ -127,8 +127,16 @@
                   index index.html;
                   try_files $uri $uri/ /index.html;
               }
-              location = /favicon.ico { access_log off; log_not_found off; }
-              location = /robots.txt  { access_log off; log_not_found off; }
+              location = /favicon.ico {
+                root {{ client_public_path }};
+                access_log off;
+                log_not_found off;
+              }
+              location = /robots.txt  {
+                root {{ client_public_path }};
+                access_log off;
+                log_not_found off;
+              }
               location ~ /\.(?!well-known).* {
                   deny all;
               }
@@ -184,12 +192,12 @@
           - listen: "80"
             server_name: _  # (unused but playbook crashes without it)
             filename: "client.{{ domain }}.80.conf"
-            root: "{{ client_public_path }}"
+            root: "{{ playmobox_public_path }}"
             state: "present"
             extra_parameters: |
               sendfile {{ 'off' if env == 'dev' else 'on' }};
               location /admin {
-                alias /var/www/{{ domain }}/public;
+                alias {{ playmobox_public_path }}/;
                 index index.html;
                 try_files $uri $uri/ /index.html;
               }
@@ -204,8 +212,16 @@
                   index index.html;
                   try_files $uri $uri/ /index.html;
               }
-              location = /favicon.ico { access_log off; log_not_found off; }
-              location = /robots.txt  { access_log off; log_not_found off; }
+              location = /favicon.ico {
+                root {{ client_public_path }};
+                access_log off;
+                log_not_found off;
+              }
+              location = /robots.txt  {
+                root {{ client_public_path }};
+                access_log off;
+                log_not_found off;
+              }
               location ~ /\.(?!well-known).* {
                   deny all;
               }
