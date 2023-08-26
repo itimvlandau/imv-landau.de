@@ -5,18 +5,6 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import ProTip from './ProTip';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}.
-    </Typography>
-  );
-}
-
 export default function App() {
   return (
     <Container maxWidth="sm">
@@ -25,7 +13,7 @@ export default function App() {
           Material UI Vite.js example in TypeScript
         </Typography>
         <ProTip />
-        <Copyright />
+        <div>test</div>
       </Box>
     </Container>
   );
