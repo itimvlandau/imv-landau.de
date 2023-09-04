@@ -17,7 +17,7 @@
 
     - name: Install npm packages
       npm:
-        path: "{{ client_root_path }}"
+        path: "{{ app_client_root_path }}"
         executable: /usr/bin/npm
       become_user: "{{ user }}"
 
@@ -31,4 +31,4 @@
       when: env == "prod"
       command: "{{ npm_run_command }}"
       args:
-        chdir: "{{ client_root_path }}"
+        chdir: "{{ app_client_root_path }}"

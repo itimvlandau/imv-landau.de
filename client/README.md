@@ -1,4 +1,54 @@
-# Material UI - Vite.js in Typescript example
+# useful commands
+
+### installation for production (after checking out this project):
+
+```
+sudo apt-get install -y git software-properties-common
+sudo apt-add-repository --yes ppa:ansible/ansible
+sudo apt update
+sudo apt install ansible -y
+www
+ansible-playbook ansible/client.yml
+ansible-playbook ansible/api.yml
+```
+
+### run playbook (ansible 2.9):
+
+```
+ansible-playbook ansible/client.yml
+```
+
+### debug:
+
+```
+tasks:
+    - debug:
+        var: npm_run_command
+```
+
+### install new role (go to project root):
+
+```
+ansible-galaxy install geerlingguy.certbot
+```
+
+### installation for development (after checking out this project + cd into project root)
+
+```sh
+vagrant up
+vagrant ssh
+www
+npm run dev
+```
+
+### destroy vagrant box
+
+```sh
+vagrant destroy -f
+```
+
+
+# Material UI - Vite.js in TypeScript example
 
 ## How to use
 
@@ -29,11 +79,11 @@ or:
 ## The idea behind the example
 
 This example uses [Vite.js](https://github.com/vitejs/vite).
-It includes `@mui/material` with `@mui/icons-material` and their peer dependencies, including [Emotion](https://emotion.sh/docs/introduction), the default style engine in Material UI v5.
+It includes `@mui/material` and its peer dependencies, including [Emotion](https://emotion.sh/docs/introduction), the default style engine in Material UI v5.
 
 ## What's next?
 
 <!-- #default-branch-switch -->
 
 You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/material-ui/getting-started/templates/) section.
+You can head back to the documentation and continue by browsing the [templates](https://mui.com/material-ui/getting-started/templates/) section.
