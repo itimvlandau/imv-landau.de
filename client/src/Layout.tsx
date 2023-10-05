@@ -25,7 +25,6 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import LocationIcon from "@mui/icons-material/LocationOn";
 import { FaMoon, FaMosque, FaFileContract, FaHands } from "react-icons/fa";
 import { ImSection } from "react-icons/im";
-import theme from "./theme";
 
 const drawerWidth = 240;
 

@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditorController extends AbstractController
 {
-    #[Route('/admin/api', name: 'editor_show')]
+    #[Route('/playmobox/api', name: 'editor_show')]
     public function show()
     {
         $response = new Response(
