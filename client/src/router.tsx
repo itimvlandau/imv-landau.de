@@ -86,7 +86,6 @@ export const routes = [
     children: [
       {
         index: true,
-        path: "/playmobox",
         element: <EditorPage />,
       },
     ],
