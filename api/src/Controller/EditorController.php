@@ -8,14 +8,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditorController extends AbstractController
 {
-    #[Route('/api/editor/show', name: 'editor_show')]
-    public function show()
+    #[Route('/api/editor', methods:['GET'], name: 'editor_show')]
+    public function show(): Response
     {
-        $response = new Response(
-            'Editor',
+        return new Response(
+            'api',
             Response::HTTP_OK,
             ['content-type' => 'text/html']
         );
-        $response->send();
     }
 }
