@@ -43,7 +43,7 @@ class PmbFilesystemService
                     $filedata[] = [
                         "index" => $pathname,
                         "children" => array_keys(iterator_to_array($iterator)),
-                        "name" => $name,
+                        "data" => $name,
                         "path" => $node->getPath(),
                         "type" => $node->getType(),
                         "isFolder" => $node->getType() === "dir" ? true : false,
@@ -59,7 +59,7 @@ class PmbFilesystemService
                 $filedata[] = [
                     "index" => $pathname,
                     "children" => [],
-                    "name" => $name,
+                    "data" => $name,
                     "path" => $node->getPath(),
                     "type" => $node->getType(),
                     "isFolder" => $node->getType() === "dir" ? true : false,

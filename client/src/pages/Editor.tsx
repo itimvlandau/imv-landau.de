@@ -48,9 +48,9 @@ const Editor: FunctionComponent<EditorProps> = ({}): ReactElement => {
   return (
     <UncontrolledTreeEnvironment
       dataProvider={
-        new StaticTreeDataProvider(longTree.items, (item, data) => ({
+          new StaticTreeDataProvider(longTree.items, (item, newName) => ({
           ...item,
-          data,
+            data: newName,
         }))
       }
       getItemTitle={(item) => item.data}
