@@ -3,52 +3,33 @@ import {
   UncontrolledTreeEnvironment,
   Tree,
   StaticTreeDataProvider,
+  TreeItemIndex, TreeItem
 } from "react-complex-tree";
 import "react-complex-tree/lib/style-modern.css";
+import { useLoaderData, useNavigation } from "react-router-dom";
+import axios from "axios";
 
 interface EditorProps {}
 
-const readTemplate = (template: any, data: any = { items: {} }) => {
-  for (const [key, value] of Object.entries(template)) {
-    data.items[key] = {
-      index: key,
-      canMove: true,
-      isFolder: value !== null,
-      children: value !== null ? Object.keys(value as object) : undefined,
-      data: key,
-      canRename: true
-    };
+const API_URL = "/api";
 
-    if (value !== null) {
-      readTemplate(value, data);
-    }
-  }
-  return data;
+export const dataLoader = async () => {
+  const res = await axios.get(`${API_URL}/editor`);
+  return res.data;
 };
 
-const longTree = readTemplate({
-  root: {
-    container: {
-      item0: null,
-      item1: null,
-      item2: null,
-      item3: {
-        inner0: null,
-        inner1: null,
-        inner2: null,
-        inner3: null
-      },
-      item4: null,
-      item5: null
-    }
-  }
-});
-
 const Editor: FunctionComponent<EditorProps> = ({}): ReactElement => {
+  const tree = useLoaderData() as Record<TreeItemIndex, TreeItem<any>>;
+  const navigation = useNavigation();
+  
+  if (navigation.state === 'loading') {
+    return <h1>loading...</h1>;
+  }
+  
   return (
     <UncontrolledTreeEnvironment
       dataProvider={
-          new StaticTreeDataProvider(longTree.items, (item, newName) => ({
+          new StaticTreeDataProvider(tree, (item, newName) => ({
           ...item,
             data: newName,
         }))
@@ -56,11 +37,11 @@ const Editor: FunctionComponent<EditorProps> = ({}): ReactElement => {
       getItemTitle={(item) => item.data}
       viewState={{
         "tree-1": {
-          expandedItems: ["Fruit"],
+          expandedItems: ["root"],
         },
       }}
     >
-      <Tree treeId="tree-1" rootItem="root" treeLabel="Tree Example" />
+      <Tree treeId="tree-1" rootItem="root" treeLabel="Playmobox file tree" />
     </UncontrolledTreeEnvironment>
   );
 };

@@ -24,7 +24,13 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
             $maxDepth: null
-            $exclude: '/node_modules|vendor|cache|ansible|dist|\.git/'
+            $exclude:
+                - 'node_modules'
+                - '.git'
+                - 'ansible'
+                - 'var'
+                - 'vendor'
+                - 'dist'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
