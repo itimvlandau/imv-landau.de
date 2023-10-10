@@ -72,7 +72,7 @@ class PmbFilesystemService
                     "data" => $name,
                     "path" => $node->getPath(),
                     "type" => $node->getType(),
-                    "isFolder" =>false,
+                    "isFolder" => false,
                     "canMove" => true,
                     "canRename" => true,
                 ];

@@ -3,7 +3,8 @@ import {
   UncontrolledTreeEnvironment,
   Tree,
   StaticTreeDataProvider,
-  TreeItemIndex, TreeItem
+  TreeItemIndex,
+  TreeItem,
 } from "react-complex-tree";
 import "react-complex-tree/lib/style-modern.css";
 import { useLoaderData, useNavigation } from "react-router-dom";
@@ -21,17 +22,17 @@ export const dataLoader = async () => {
 const Editor: FunctionComponent<EditorProps> = ({}): ReactElement => {
   const tree = useLoaderData() as Record<TreeItemIndex, TreeItem<any>>;
   const navigation = useNavigation();
-  
-  if (navigation.state === 'loading') {
+
+  if (navigation.state === "loading") {
     return <h1>loading...</h1>;
   }
-  
+
   return (
     <UncontrolledTreeEnvironment
       dataProvider={
-          new StaticTreeDataProvider(tree, (item, newName) => ({
+        new StaticTreeDataProvider(tree, (item, newName) => ({
           ...item,
-            data: newName,
+          data: newName,
         }))
       }
       getItemTitle={(item) => item.data}

@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EditorController extends AbstractController
 {
-    #[Route('/api/editor', methods:['GET'], name: 'editor_show')]
+    #[Route('/api/editor', methods: ['GET'], name: 'editor_show')]
     public function show(PmbFilesystemService $pmbFilesystemService): JsonResponse
     {
         return new JsonResponse($pmbFilesystemService->scandir());
