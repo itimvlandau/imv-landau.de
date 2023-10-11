@@ -26,6 +26,7 @@ bashrc_lines:
   - "alias www='cd /var/www/{{ domain }}'"
   - "alias api='cd /var/www/{{ domain }}/api'"
   - "alias cli='cd /var/www/{{ domain }}/client'"
+  - "alias run='npm run dev'"
 
 nodejs_version: "18.x"
 npm_packages:
@@ -35,7 +36,7 @@ php_fpm_pool_user: "{{ user }}"
 php_fpm_pool_group: "{{ user }}"
 php_webserver_daemon: "nginx"
 nginx_config_root: "/etc/nginx"
-php_version: '8.1'
+php_version: "8.1"
 php_default_version_debian: "{{ php_version }}"
 php_enable_php_fpm: true
 php_fpm_state: "started"
@@ -47,7 +48,7 @@ php_upload_max_filesize: "256M"
 
 # certbot_create_method: standalone
 # Available options: 'package', 'snap', 'source'.
-certbot_install_method: 'package'
+certbot_install_method: "package"
 certbot_admin_email: "s.aburab@gmail.com"
 certbot_create_if_missing: true
 certbot_create_standalone_stop_services:
@@ -58,4 +59,4 @@ certbot_auto_renew_options: --no-self-upgrade
 #certbot_auto_renew_options: --quiet --no-self-upgrade --pre-hook "systemctl stop nginx" --post-hook "systemctl start nginx"
 certbot_certs:
   - domains:
-    - "{{ domain }}"
+      - "{{ domain }}"
