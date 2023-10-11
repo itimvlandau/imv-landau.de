@@ -1,21 +1,21 @@
-import { FunctionComponent, ReactElement, StrictMode } from "react";
-import { RouterProvider } from "react-router-dom";
+import { FunctionComponent, ReactElement } from "react";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-import theme from "./theme";
+import { RouterProvider } from "react-router-dom";
 import { router } from "@/router";
+import configureStore from "@/configureStore";
+import theme from "@/theme";
+
+const store = configureStore();
 
 const App: FunctionComponent = (): ReactElement => (
-  <StrictMode>
+  <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <CssBaseline />
       <RouterProvider router={router} />
+      <CssBaseline />
     </ThemeProvider>
-  </StrictMode>
+  </Provider>
 );
 
 export default App;

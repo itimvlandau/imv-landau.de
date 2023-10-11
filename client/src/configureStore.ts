@@ -1,7 +1,9 @@
 import createSagaMiddleware from "redux-saga";
 import { configureStore, EnhancedStore } from "@reduxjs/toolkit";
-import rootReducer from "./rootReducer";
+import configureRootReducer from "./configureRootReducer";
 import rootSaga from "./rootSaga";
+
+const rootReducer = configureRootReducer();
 
 export default (preloadedState?: {}): EnhancedStore => {
   const sagaMiddleware = createSagaMiddleware();

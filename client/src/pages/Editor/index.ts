@@ -1,5 +1,5 @@
 import Editor, { dataLoader } from "./Editor";
-import reducer, { initialState } from "./reducer";
+import reducer from "./slice";
 import editorSagas from "./sagas";
 
-export { Editor as default, dataLoader, reducer, initialState, editorSagas };
+export { Editor as default, dataLoader, reducer, editorSagas };
