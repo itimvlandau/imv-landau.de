@@ -9,6 +9,7 @@ import {
 import "react-complex-tree/lib/style-modern.css";
 import { useLoaderData, useNavigation } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 interface EditorProps {}
 
@@ -22,6 +23,7 @@ export const dataLoader = async () => {
 const Editor: FunctionComponent<EditorProps> = ({}): ReactElement => {
   const tree = useLoaderData() as Record<TreeItemIndex, TreeItem<any>>;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   if (navigation.state === "loading") {
     return <h1>loading...</h1>;
@@ -40,6 +42,9 @@ const Editor: FunctionComponent<EditorProps> = ({}): ReactElement => {
         "tree-1": {
           expandedItems: ["root"],
         },
+      }}
+      onSelectItems={(items, index) => {
+        console.log("test", items, index);
       }}
     >
       <Tree treeId="tree-1" rootItem="root" treeLabel="Playmobox file tree" />
