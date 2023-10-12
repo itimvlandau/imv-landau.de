@@ -6,6 +6,8 @@ use FilesystemIterator;
 use IteratorIterator;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PmbFilesystemService
 {
@@ -17,7 +19,14 @@ class PmbFilesystemService
     ) {
     }
 
-    public function  scandir($pathname = ".")
+    public function getContent($pathname = "."): BinaryFileResponse
+    {
+        chdir(Path::canonicalize($this->projectDir . "/.."));
+        $filesystem = new Filesystem();
+        return new BinaryFileResponse($pathname);
+    }
+
+    public function scandir($pathname = "."): array
     {
         chdir(Path::canonicalize($this->projectDir . "/.."));
         $iterator = new FilesystemIterator($pathname, FilesystemIterator::SKIP_DOTS);
@@ -33,7 +42,7 @@ class PmbFilesystemService
         return $dirFlattened;
     }
 
-    private function scandirFlattened($dir, $parent = null, &$filedata = [], $level = 0)
+    private function scandirFlattened($dir, $parent = null, &$filedata = [], $level = 0): array
     {
         if (!$dir instanceof FilesystemIterator) {
             $dir = new FilesystemIterator(

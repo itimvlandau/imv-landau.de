@@ -3,7 +3,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "@/Layout";
 import PlaymoboxLayout from "@/PlaymoboxLayout";
 import HomePage from "@/pages/Home";
-import EditorPage, { dataLoader } from "@/pages/Editor";
 import ErrorPage from "@/pages/Error";
 import NewsPage from "@/pages/News";
 import IslamPage from "@/pages/Islam";
@@ -17,6 +16,7 @@ import SchedulePage from "@/pages/Schedule";
 import LocationPage from "@/pages/Location";
 import StatutePage from "@/pages/Statute";
 import ImprintPage from "@/pages/Imprint";
+import EditorPage, { editorService } from "@/pages/Editor";
 
 export const routes = [
   {
@@ -86,7 +86,7 @@ export const routes = [
     children: [
       {
         index: true,
-        loader: dataLoader,
+        loader: editorService.getEditor,
         element: <EditorPage />,
       },
     ],

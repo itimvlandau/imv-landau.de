@@ -4,10 +4,8 @@ import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { RouterProvider } from "react-router-dom";
 import { router } from "@/router";
-import configureStore from "@/configureStore";
+import store from "@/store";
 import theme from "@/theme";
-
-const store = configureStore();
 
 const App: FunctionComponent = (): ReactElement => (
   <Provider store={store}>
