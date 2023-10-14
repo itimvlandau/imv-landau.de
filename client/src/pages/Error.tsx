@@ -40,7 +40,7 @@ export default function Error() {
             <Typography variant="h6" color="red" paragraph>
               {errorMessage}
             </Typography>
-            <Button variant="contained" to="/">
+            <Button variant="contained" href="/">
               Back Home
             </Button>
           </Grid>
