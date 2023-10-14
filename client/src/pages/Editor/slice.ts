@@ -18,17 +18,14 @@ const editorSlice = createSlice({
   initialState,
   reducers: {
     getContent(state, action: PayloadAction<{ selectedItem: TreeItem<any> }>) {
-      console.log("slice getContent", action);
       state.fetchingContent = true;
       state.selectedItem = action.payload.selectedItem;
     },
     getContentSuccess(state, action: PayloadAction<{ content: string }>) {
-      console.log("slice getContentSuccess", action);
       state.fetchingContent = false;
       state.content = action.payload.content;
     },
     getContentFailure(state) {
-      console.log("slice getContentFailure");
       state.fetchingContent = false;
     },
   },

@@ -37,7 +37,6 @@ const Editor: FunctionComponent = ({}): ReactElement => {
           },
         }}
         onPrimaryAction={(item: TreeItem): void => {
-          console.log("onPrimaryAction", item);
           dispatch(editorActions.getContent({ selectedItem: item }));
         }}
       >

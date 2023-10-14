@@ -8,6 +8,9 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Api\ApiProblem;
+use App\Api\ApiProblemException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PmbFilesystemService
 {
@@ -19,10 +22,14 @@ class PmbFilesystemService
     ) {
     }
 
-    public function getContent($pathname = "."): BinaryFileResponse
+    public function getContent($pathname = "."): BinaryFileResponse | JsonResponse
     {
         chdir(Path::canonicalize($this->projectDir . "/.."));
         $filesystem = new Filesystem();
+
+        if (!$filesystem->exists($pathname)) {
+            throw new ApiProblemException(new ApiProblem(400, "File \"$pathname\" does not exist"));
+        }
         return new BinaryFileResponse($pathname);
     }
 

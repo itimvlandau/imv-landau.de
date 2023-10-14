@@ -7,8 +7,8 @@ import svgr from "vite-plugin-svgr";
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'http://localhost:85'
-    }
+      "/api": "http://localhost:85",
+    },
   },
   plugins: [
     react(),
@@ -19,7 +19,7 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ["@emotion/react", "@emotion/styled"],
+    include: ["@mui/icons-material", "@emotion/react", "@emotion/styled"],
   },
   resolve: {
     alias: [

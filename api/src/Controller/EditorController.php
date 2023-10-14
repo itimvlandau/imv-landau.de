@@ -18,7 +18,7 @@ class EditorController extends AbstractController
     }
 
     #[Route('/api/content', methods: ['GET'], name: 'get_content')]
-    public function getContent(PmbFilesystemService $pmbFilesystemService, Request $request): BinaryFileResponse
+    public function getContent(PmbFilesystemService $pmbFilesystemService, Request $request): BinaryFileResponse | JsonResponse
     {
         $pathname = $request->query->get('pathname');
         return $pmbFilesystemService->getContent($pathname);
