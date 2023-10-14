@@ -18,7 +18,7 @@ function* onGetContent(action: {
     yield put(editorActions.getContentFailure());
     yield put(
       notifierActions.enqueueNotifier({
-        error: JSON.parse(ab2str(error.response.data)),
+        error: JSON.parse(ab2str(error?.response?.data)),
         isNetworkError: error.message === "Network Error",
         type: "error",
       })
