@@ -1,4 +1,9 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
+import Container from "@mui/system/Container";
+import Grid from "@mui/material/Unstable_Grid2";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 export default function Error() {
   const error = useRouteError();
@@ -17,12 +22,44 @@ export default function Error() {
   }
 
   return (
-    <div>
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{errorMessage}</i>
-      </p>
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Container maxWidth="md">
+        <Grid container spacing={2}>
+          <Grid xs={6}>
+            <Typography variant="h6">Oops!</Typography>
+            <Typography variant="h4" gutterBottom>
+              Sorry, an unexpected error has occurred.
+            </Typography>
+            <Typography variant="h6" color="red" paragraph>
+              {errorMessage}
+            </Typography>
+            <Button variant="contained" to="/">
+              Back Home
+            </Button>
+          </Grid>
+          <Grid xs={6}>
+            <Box
+              component="img"
+              sx={{
+                maxWidth: 500,
+                maxHeight: 250,
+                border: 1,
+                borderRadius: "8px",
+                boxShadow: 2,
+              }}
+              alt="error image"
+              src="internal-server-error.png"
+            />
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 }
