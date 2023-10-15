@@ -3,13 +3,13 @@ import { TreeItem } from "react-complex-tree";
 
 interface EditorState {
   selectedItem: TreeItem<any> | null;
-  content: string | null;
+  content: string | undefined;
   fetchingContent: boolean;
 }
 
 const initialState: EditorState = {
   selectedItem: null,
-  content: null,
+  content: undefined,
   fetchingContent: false,
 };
 

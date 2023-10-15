@@ -1,13 +1,8 @@
 import * as React from "react";
-import { Link, Outlet } from "react-router-dom";
-import Box from "@mui/material/Box";
+import { Outlet } from "react-router-dom";
 
 const Root: React.FunctionComponent = (): React.ReactElement => {
-  return (
-    <Box sx={{ display: "flex" }}>
-      <Outlet />
-    </Box>
-  );
+  return <Outlet />;
 };
 
 export default Root;
