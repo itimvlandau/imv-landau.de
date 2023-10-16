@@ -1,6 +1,5 @@
-import Editor, { useMonaco } from "@monaco-editor/react";
+import MonacoEditor, { useMonaco } from "@monaco-editor/react";
 import { loader } from "@monaco-editor/react";
-
 import * as monaco from "monaco-editor";
 import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker&inline";
 import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker&inline";
@@ -28,6 +27,6 @@ self.MonacoEnvironment = {
 
 loader.config({ monaco });
 
-const editor = monaco.editor;
+loader.init();
 
-export { useMonaco, Editor as MonacoEditor, editor };
+export { useMonaco, MonacoEditor as default, monaco };
