@@ -1,6 +1,6 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
 import Container from "@mui/system/Container";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
