@@ -64,6 +64,7 @@ const Editor: FunctionComponent = ({}): ReactElement => {
           />
         </UncontrolledTreeEnvironment>
         <MonacoEditor
+          theme="vs-dark"
           height="100vh"
           defaultLanguage="javascript"
           defaultValue="// some comment"
