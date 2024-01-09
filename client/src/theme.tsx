@@ -16,7 +16,7 @@ const LinkBehavior = React.forwardRef<
   return <RouterLink ref={ref} to={href} {...other} />;
 });
 
-let playmoboxTheme = createTheme({
+let pmbTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
@@ -71,7 +71,7 @@ let theme = createTheme({
   direction: "ltr",
 });
 
-playmoboxTheme = responsiveFontSizes(playmoboxTheme);
+pmbTheme = responsiveFontSizes(pmbTheme);
 theme = responsiveFontSizes(theme);
 
-export { theme as default, playmoboxTheme };
+export { theme as default, pmbTheme };

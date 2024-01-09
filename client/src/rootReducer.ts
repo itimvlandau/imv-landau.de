@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import { notifierReducer } from "./containers/Notifier";
-import { editorReducer } from "./pages/Editor";
+import { pmbEditorReducer } from "./pages/PmbEditor";
 
 const rootReducer = combineReducers({
   notifier: notifierReducer,
-  editor: editorReducer,
+  pmbEditor: pmbEditorReducer,
 });
 
 export default rootReducer;

@@ -1,21 +1,21 @@
 import { put, takeLatest, call } from "redux-saga/effects";
-import { editorService } from "@/pages/Editor";
+import { pmbEditorService } from "@/pages/PmbEditor";
 import { ab2str } from "@/helpers/utils";
 import { TreeItem } from "react-complex-tree";
-import { editorActions } from "@/pages/Editor";
+import { pmbEditorActions } from "@/pages/PmbEditor";
 import { notifierActions } from "@/containers/Notifier";
 
-function* onGetContent(action: {
+function* onGetPmbEditorContent(action: {
   type: string;
   payload: { selectedItem: TreeItem<any> };
 }) {
   try {
     let content: Uint8Array = yield call(() =>
-      editorService.getContent(action.payload.selectedItem.index)
+      pmbEditorService.getPmbEditorContent(action.payload.selectedItem.index)
     );
-    yield put(editorActions.getContentSuccess({ content: ab2str(content) }));
+    yield put(pmbEditorActions.getPmbEditorContentSuccess({ content: ab2str(content) }));
   } catch (error: any) {
-    yield put(editorActions.getContentFailure());
+    yield put(pmbEditorActions.getPmbEditorContentFailure());
     yield put(
       notifierActions.enqueueNotifier({
         error: JSON.parse(ab2str(error?.response?.data)),
@@ -27,5 +27,5 @@ function* onGetContent(action: {
 }
 
 export default function* watchActions() {
-  yield takeLatest("editor/getContent", onGetContent);
+  yield takeLatest("pmbEditor/getPmbEditorContent", onGetPmbEditorContent);
 }

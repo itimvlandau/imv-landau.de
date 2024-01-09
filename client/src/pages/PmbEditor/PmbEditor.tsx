@@ -11,25 +11,25 @@ import {
 import "react-complex-tree/lib/style-modern.css";
 import { useLoaderData, useNavigation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { editorActions } from "./slice";
+import { pmbEditorActions } from "./slice";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 
-const Editor: FunctionComponent = ({}): ReactElement => {
+const PmbEditor: FunctionComponent = ({}): ReactElement => {
   const tree = useLoaderData() as Record<TreeItemIndex, TreeItem<any>>;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const content = useAppSelector((state) => state.editor.content);
+  const pmbEditorContent = useAppSelector((state) => state.pmbEditor.content);
 
   if (navigation.state === "loading") {
     return <h1>loading...</h1>;
   }
 
   const onChange = (
-    editorContents: string | undefined,
+    pmbEditorContents: string | undefined,
     _event: monaco.editor.IModelContentChangedEvent
   ) => {
-    console.log("editorContents", editorContents);
+    console.log("pmbEditorContents", pmbEditorContents);
   };
 
   return (
@@ -54,7 +54,7 @@ const Editor: FunctionComponent = ({}): ReactElement => {
             },
           }}
           onPrimaryAction={(item: TreeItem): void => {
-            dispatch(editorActions.getContent({ selectedItem: item }));
+            dispatch(pmbEditorActions.getPmbEditorContent({ selectedItem: item }));
           }}
         >
           <Tree
@@ -68,7 +68,7 @@ const Editor: FunctionComponent = ({}): ReactElement => {
           height="100vh"
           defaultLanguage="javascript"
           defaultValue="// some comment"
-          value={content}
+          value={pmbEditorContent}
           onChange={onChange}
         />
       </Allotment>
@@ -76,4 +76,4 @@ const Editor: FunctionComponent = ({}): ReactElement => {
   );
 };
 
-export default Editor;
+export default PmbEditor;

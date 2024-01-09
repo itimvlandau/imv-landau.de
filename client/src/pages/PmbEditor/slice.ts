@@ -1,35 +1,35 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TreeItem } from "react-complex-tree";
 
-interface EditorState {
+interface PmbEditorState {
   selectedItem: TreeItem<any> | null;
   content: string | undefined;
   fetchingContent: boolean;
 }
 
-const initialState: EditorState = {
+const initialState: PmbEditorState = {
   selectedItem: null,
   content: undefined,
   fetchingContent: false,
 };
 
-const editorSlice = createSlice({
-  name: "editor",
+const pmbEditorSlice = createSlice({
+  name: "pmbEditor",
   initialState,
   reducers: {
-    getContent(state, action: PayloadAction<{ selectedItem: TreeItem<any> }>) {
+    getPmbEditorContent(state, action: PayloadAction<{ selectedItem: TreeItem<any> }>) {
       state.fetchingContent = true;
       state.selectedItem = action.payload.selectedItem;
     },
-    getContentSuccess(state, action: PayloadAction<{ content: string }>) {
+    getPmbEditorContentSuccess(state, action: PayloadAction<{ content: string }>) {
       state.fetchingContent = false;
       state.content = action.payload.content;
     },
-    getContentFailure(state) {
+    getPmbEditorContentFailure(state) {
       state.fetchingContent = false;
     },
   },
 });
 
-export const editorActions = editorSlice.actions;
-export default editorSlice.reducer;
+export const pmbEditorActions = pmbEditorSlice.actions;
+export default pmbEditorSlice.reducer;

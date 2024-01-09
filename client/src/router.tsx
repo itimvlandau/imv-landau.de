@@ -1,7 +1,7 @@
 import type { RouteObject } from "react-router-dom";
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "@/Layout";
-import PlaymoboxLayout from "@/PlaymoboxLayout";
+import PmbLayout from "@/PmbLayout";
 import HomePage from "@/pages/Home";
 import ErrorPage from "@/pages/Error";
 import NewsPage from "@/pages/News";
@@ -16,7 +16,7 @@ import SchedulePage from "@/pages/Schedule";
 import LocationPage from "@/pages/Location";
 import StatutePage from "@/pages/Statute";
 import ImprintPage from "@/pages/Imprint";
-import EditorPage, { editorService } from "@/pages/Editor";
+import PmbEditorPage, { pmbEditorService } from "@/pages/PmbEditor";
 
 export const routes = [
   {
@@ -81,13 +81,13 @@ export const routes = [
   },
   {
     path: "/playmobox",
-    element: <PlaymoboxLayout />,
+    element: <PmbLayout />,
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        loader: editorService.getEditor,
-        element: <EditorPage />,
+        loader: pmbEditorService.getPmbEditor,
+        element: <PmbEditorPage />,
       },
     ],
   },
