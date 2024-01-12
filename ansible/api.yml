@@ -82,9 +82,15 @@
       include_role:
         name: geerlingguy.certbot
 
-    - name: Install adminer
+    - name: Install Adminer
       import_role:
         name: geerlingguy.adminer
+
+    - name: Copy custom Adminer theme
+      copy:
+        src: ./files/adminer.css
+        dest: "{{ adminer_install_dir }}"
+        mode: 0644
 
     - name: Install NGINX
       include_role:
