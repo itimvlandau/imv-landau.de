@@ -60,3 +60,10 @@ certbot_auto_renew_options: --no-self-upgrade
 certbot_certs:
   - domains:
       - "{{ domain }}"
+
+adminer_add_apache_config: false
+adminer_install_filename: index.php
+pmb_database_root_password: "SuperPassw0rd"
+pmb_database_name: playmobox
+pmb_database_user: playmobox
+pmb_database_password: playmobox

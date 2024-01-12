@@ -82,6 +82,10 @@
       include_role:
         name: geerlingguy.certbot
 
+    - name: Install adminer
+      import_role:
+        name: geerlingguy.adminer
+
     - name: Install NGINX
       include_role:
         name: geerlingguy.nginx
@@ -112,6 +116,12 @@
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header Host $host;
                 proxy_pass http://127.0.0.1:85;
+              }
+              location /adminer {
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header Host $host;
+                proxy_pass http://127.0.0.1:8585;
               }
               location = /favicon.ico {
                 root {{ client_public_path }};
@@ -160,7 +170,47 @@
             access_log: "/var/log/nginx/{{ domain }}-api.log"
             error_log: "/var/log/nginx/{{ domain }}-api-error.log"
             error_page: "404 /index.php"
+          - listen: "8585"
+            server_name: _  # (unused but playbook crashes without it)
+            filename: "{{ domain }}.db.conf"
+            root: "{{ adminer_install_dir }}"
+            index: "index.php adminer.php"
+            state: "present"
+            extra_parameters: |
+              sendfile {{ 'off' if env == 'dev' else 'on' }};
+              location / {
+                try_files $uri $uri/ /index.php?$query_string;
+              }
+              location ~ \.php$ {
+                  fastcgi_pass 127.0.0.1:9000;
+                  fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+                  include fastcgi_params;
+
+                  fastcgi_buffer_size 128k;
+                  fastcgi_buffers 256 16k;
+                  fastcgi_busy_buffers_size 256k;
+                  fastcgi_temp_file_write_size 256k;
+              }
+            access_log: "/var/log/nginx/{{ domain }}-db.log"
+            error_log: "/var/log/nginx/{{ domain }}-db-error.log"
+            error_page: "404 /index.php"
 
     - name: Install composer
       include_role:
         name: geerlingguy.composer
+
+    - name: Install mysql server
+      include_role:
+        name: geerlingguy.mysql
+      vars:
+        mysql_root_password: "{{ pmb_database_root_password }}"
+        mysql_root_password_update: no
+        mysql_databases:
+          - name: "{{ pmb_database_name }}"
+            encoding: "utf8"
+            collation: "utf8_general_ci"
+        mysql_users:
+          - name: "{{ pmb_database_user }}"
+            host: "localhost"
+            password: "{{ pmb_database_password }}"
+            priv: "{{ pmb_database_name }}.*:ALL"

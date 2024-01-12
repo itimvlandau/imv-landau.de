@@ -1,0 +1,21 @@
+## Install instructions
+
+### setup
+
+wget https://cs.symfony.com/download/php-cs-fixer-v3.phar -O php-cs-fixer
+sudo chmod a+x php-cs-fixer
+sudo mv php-cs-fixer /usr/local/bin/php-cs-fixer
+
+### env: production (prod)
+
+#### api
+ansible-playbook ansible/api.yml -i ansible/environments/prod
+#### client
+ansible-playbook ansible/client.yml -i ansible/environments/prod
+
+
+### development
+
+#### install ansible role example
+cd ./ansible
+ansible-galaxy role install geerlingguy.adminer -p ./roles/
