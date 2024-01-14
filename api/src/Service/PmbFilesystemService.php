@@ -22,17 +22,6 @@ class PmbFilesystemService
     ) {
     }
 
-    public function getContent($pathname = "."): BinaryFileResponse | JsonResponse
-    {
-        chdir(Path::canonicalize($this->projectDir . "/.."));
-        $filesystem = new Filesystem();
-
-        if (!$filesystem->exists($pathname)) {
-            throw new ApiProblemException(new ApiProblem(400, "File \"$pathname\" does not exist"));
-        }
-        return new BinaryFileResponse($pathname);
-    }
-
     public function scandir($pathname = "."): array
     {
         chdir(Path::canonicalize($this->projectDir . "/.."));
@@ -47,6 +36,17 @@ class PmbFilesystemService
             "canRename" => false,
         ];
         return $dirFlattened;
+    }
+
+    public function getContent($pathname = "."): BinaryFileResponse | JsonResponse
+    {
+        chdir(Path::canonicalize($this->projectDir . "/.."));
+        $filesystem = new Filesystem();
+
+        if (!$filesystem->exists($pathname)) {
+            throw new ApiProblemException(new ApiProblem(400, "File \"$pathname\" does not exist"));
+        }
+        return new BinaryFileResponse($pathname);
     }
 
     private function scandirFlattened($dir, $parent = null, &$filedata = [], $level = 0): array
