@@ -38,6 +38,7 @@ class ApiProblemExceptionSubscriber implements EventSubscriberInterface
             $request = $event->getRequest();
             $routeName = $request->get('_route');
             $apiProblem->set('route', $routeName);
+            $apiProblem->setMessage($ex->getMessage());
             $apiProblem->set('exception', [
                 'file' => $ex->getFile(),
                 'line' => $ex->getLine(),

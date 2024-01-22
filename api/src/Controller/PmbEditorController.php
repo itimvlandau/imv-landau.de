@@ -20,7 +20,7 @@ class PmbEditorController extends AbstractController
     #[Route('/api/pmbEditorContent', methods: ['GET'], name: 'get_pmb_editor_content')]
     public function getPmbEditorContent(PmbFilesystemService $pmbFilesystemService, Request $request): BinaryFileResponse | JsonResponse
     {
-        $pathname = $request->query->get('pathname');
+        $pathname = $request->query->get('pathname') ?? '.';
         return $pmbFilesystemService->getContent($pathname);
     }
 }

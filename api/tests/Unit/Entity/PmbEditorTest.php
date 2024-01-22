@@ -6,8 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class PmbEditorTest extends TestCase {
     
-    public function testItWorks(): void {
+    public function testItCanGetAFilesContent(): void {
         self::assertEquals(42,42);
     }
-
 }
