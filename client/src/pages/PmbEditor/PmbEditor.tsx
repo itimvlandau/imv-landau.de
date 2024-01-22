@@ -37,6 +37,7 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
       <GlobalStyles
         styles={{
           ":root, body, #root": { height: "100%" },
+          ".split-view-view": { overflow: "auto !important" } /* fix scroll hidden in linux bug */
         }}
       />
       <Allotment defaultSizes={[20, 100]}>
@@ -54,6 +55,7 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
             },
           }}
           onPrimaryAction={(item: TreeItem): void => {
+            console.log('primary action tree');
             dispatch(pmbEditorActions.getPmbEditorContent({ selectedItem: item }));
           }}
         >
