@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -27,6 +26,7 @@ class PmbFilesystemService
              ->depth('== 0')
              ->ignoreUnreadableDirs()
              ->ignoreVCSIgnored(true)
+             ->ignoreDotFiles(false)
              ->in(Path::canonicalize($this->projectDir . "/.."));
 
         $dirFlattened = $this->scandirFlattened(Path::canonicalize($this->projectDir . "/../" . $pathname));
@@ -58,29 +58,36 @@ class PmbFilesystemService
              ->depth('== 0')
              ->ignoreUnreadableDirs()
              ->ignoreVCSIgnored(true)
+             ->ignoreDotFiles(false)
              ->in($pathname);
-
+    
         foreach ($finder as $node) {
             $name = $node->getFilename();
             if ($node->isDir()) {
                 $pathname = $node->getPathname();
-                $finderChild = new Finder();
-                $finderChild
-                        ->depth('== 0')
-                        ->ignoreUnreadableDirs()
-                        ->ignoreVCSIgnored(true)
-                        ->in($pathname);
-                $filedata[$pathname] = [
-                    "index" => $pathname,
-                    "children" => array_map(fn($item) => $item->getPathname(), array_values(iterator_to_array($finderChild))),
-                    "data" => $name,
-                    "path" => $node->getPath(),
-                    "type" => $node->getType(),
-                    "isFolder" => $node->getType() === "dir" ? true : false,
-                    "canMove" => true,
-                    "canRename" => true,
-                ];
-                $this->scandirFlattened($pathname, $name, $filedata, $level + 1);
+                if (
+                    (!isset($this->maxDepth) || $level < $this->maxDepth) && 
+                    !in_array($parent, $this->exclude)
+                ) {
+                    $finderChild = new Finder();
+                    $finderChild
+                            ->depth('== 0')
+                            ->ignoreUnreadableDirs()
+                            ->ignoreVCSIgnored(true)
+                            ->ignoreDotFiles(false)
+                            ->in($pathname);
+                    $filedata[$pathname] = [
+                        "index" => $pathname,
+                        "children" => array_map(fn($item) => $item->getPathname(), array_values(iterator_to_array($finderChild))),
+                        "data" => $name,
+                        "path" => $node->getPath(),
+                        "type" => $node->getType(),
+                        "isFolder" => $node->getType() === "dir" ? true : false,
+                        "canMove" => true,
+                        "canRename" => true,
+                    ];
+                    $this->scandirFlattened($pathname, $name, $filedata, $level + 1);
+                }
             } elseif ($node->isFile()) {
                 $pathname = $node->getPathname();
                 $filedata[$pathname] = [
