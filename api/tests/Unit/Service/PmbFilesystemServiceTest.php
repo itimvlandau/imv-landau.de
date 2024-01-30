@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Unit\Entity;
+namespace App\Tests\Unit\Service;
 
 use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 use App\Service\PmbFilesystemService;
 
-class PmbEditorTest extends TestCase
+class PmbFilesystemServiceTest extends TestCase
 {
     private $fs;
     private $root;
