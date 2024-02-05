@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "rexshi.phpdoc-comment-vscode-plugin",
+        "bmewburn.vscode-intelephense-client",
+        "ctf0.php-namespace-resolver",
+        "splashmich.symfony-vscode-fixed",
+        "nadim-vscode.symfony-code-snippets"
+    ]
+}
