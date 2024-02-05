@@ -20,6 +20,7 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const pmbEditorContent = useAppSelector((state) => state.pmbEditor.content);
+  const selectedItem = useAppSelector((state) => state.pmbEditor.selectedItem);
 
   if (navigation.state === "loading") {
     return <h1>loading...</h1>;
@@ -32,12 +33,28 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
     console.log("pmbEditorContents", pmbEditorContents);
   };
 
+  const blockContext = "editorTextFocus && !suggestWidgetVisible && !renameInputVisible && !inSnippetMode && !quickFixWidgetVisible";
+  monaco.editor.addEditorAction({
+    id: "executeCurrentAndAdvance",
+    label: "Execute Block and Advance",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+    contextMenuGroupId: "2_execution",
+    precondition: blockContext,
+    run: (editor: monaco.editor.ICodeEditor) => {
+      dispatch(
+        pmbEditorActions.setPmbEditorContent({ selectedItem, content: editor.getValue() })
+      );
+    },
+  });
+
   return (
     <>
       <GlobalStyles
         styles={{
           ":root, body, #root": { height: "100%" },
-          ".split-view-view": { overflow: "auto !important" } /* fix scroll hidden in linux bug */
+          ".split-view-view": {
+            overflow: "auto !important",
+          } /* fix scroll hidden in linux bug */,
         }}
       />
       <Allotment defaultSizes={[20, 100]}>
@@ -55,8 +72,9 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
             },
           }}
           onPrimaryAction={(item: TreeItem): void => {
-            console.log('primary action tree');
-            dispatch(pmbEditorActions.getPmbEditorContent({ selectedItem: item }));
+            dispatch(
+              pmbEditorActions.getPmbEditorContent({ selectedItem: item })
+            );
           }}
         >
           <Tree

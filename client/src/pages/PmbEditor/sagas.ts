@@ -13,7 +13,9 @@ function* onGetPmbEditorContent(action: {
     let content: Uint8Array = yield call(() =>
       pmbEditorService.getPmbEditorContent(action.payload.selectedItem.index)
     );
-    yield put(pmbEditorActions.getPmbEditorContentSuccess({ content: ab2str(content) }));
+    yield put(
+      pmbEditorActions.getPmbEditorContentSuccess({ content: ab2str(content) })
+    );
   } catch (error: any) {
     yield put(pmbEditorActions.getPmbEditorContentFailure());
     yield put(
@@ -26,6 +28,39 @@ function* onGetPmbEditorContent(action: {
   }
 }
 
+function* onSetPmbEditorContent(action: {
+  type: string;
+  payload: { selectedItem: TreeItem<any>; content: string };
+}) {
+  try {
+    let message: string = yield call(() =>
+      pmbEditorService.setPmbEditorContent(
+        action.payload.selectedItem?.index,
+        action.payload.content
+      )
+    );
+    yield put(pmbEditorActions.setPmbEditorContentSuccess());
+    yield put(
+      notifierActions.enqueueNotifier({
+        message: message,
+        error: null,
+        isNetworkError: false,
+        type: "success",
+      })
+    );
+  } catch (error: any) {
+    yield put(pmbEditorActions.setPmbEditorContentFailure());
+    yield put(
+      notifierActions.enqueueNotifier({
+        error: error?.response?.data,
+        isNetworkError: error.message === "Network Error",
+        type: "error",
+      })
+    );
+  }
+}
+
 export default function* watchActions() {
   yield takeLatest("pmbEditor/getPmbEditorContent", onGetPmbEditorContent);
+  yield takeLatest("pmbEditor/setPmbEditorContent", onSetPmbEditorContent);
 }

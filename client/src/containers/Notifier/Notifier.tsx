@@ -1,11 +1,13 @@
-import { useAppSelector } from "@/hooks";
-import { AxiosError } from "axios";
-import { SnackbarMessage, useSnackbar } from "notistack";
-import { useEffect, useCallback } from "react";
+import { useAppSelector, useAppDispatch } from "@/hooks";
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
+import { notifierActions } from "./slice";
 
 const Notifier = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.notifier.error);
+  const message = useAppSelector((state) => state.notifier.message);
   const isNetworkError = useAppSelector(
     (state) => state.notifier.isNetworkError
   );
@@ -25,8 +27,19 @@ const Notifier = () => {
       if (process.env.NODE_ENV !== "production") {
         console.log("[PMB]", error);
       }
+    } else if (message) {
+      enqueueSnackbar(message, {
+        variant: type,
+        preventDuplicate: false,
+        persist: false,
+        onEntered: () => {
+          console.log('enter');
+          dispatch(notifierActions.dequeueNotifier());
+          
+        }
+      });
     }
-  }, [error]);
+  }, [error, message]);
   return <></>;
 };
 

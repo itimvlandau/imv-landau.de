@@ -17,4 +17,15 @@ const getPmbEditorContent = async (pathname: TreeItemIndex) => {
   return res.data;
 };
 
-export { getPmbEditor, getPmbEditorContent };
+const setPmbEditorContent = async (
+  pathname: TreeItemIndex,
+  content: string
+) => {
+  const res = await axios.post(`/api/pmbEditorContent`, {
+    pathname,
+    content,
+  });
+  return res.data;
+};
+
+export { getPmbEditor, getPmbEditorContent, setPmbEditorContent };
