@@ -1,4 +1,5 @@
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
 
 export default function Imprint() {
   const link = (
@@ -23,21 +24,77 @@ export default function Imprint() {
       <Typography paragraph>
         <strong>Anschrift</strong>
         <br />
-        Islamischer multikultureller Verein Landau e.V (IMV Landau e.V.)
+        IMV Landau-Pfalz e.V.
         <br />
         Danziger Platz 14
         <br />
-        76829 Landau in der Pfalz
-      </Typography>
-      <Typography paragraph>
-        <strong>Telefon</strong>
-        <br />
-        +49 6341 5575698
+        76829 Landau
       </Typography>
       <Typography paragraph>
         <strong>E-Mail</strong>
         <br />
         imv-landau@web.de
+      </Typography>
+      <Typography>
+        <strong>Gemeinschaftlich vertretungsbefugt:</strong>
+      </Typography>
+      <Typography sx={{ "mt": 1, "mb": 2}} component="div" variant="caption">
+        <strong>1. Vorsitzender:</strong>
+        <br />
+        Herr Houari Dada<br />
+        <strong>Anschrift</strong>
+        <br />
+        Marktstraße 55
+        <br />
+        67487 Maikammer
+        <br />
+        <strong>Telefon:</strong>
+        <br />
+        0176/72 76 52 91
+        <br />
+        <strong>E-Mail:</strong>
+        <br />
+        houaridada@outlook.fr
+      </Typography>
+      <Typography sx={{ "mb": 3}} component="div" variant="caption" gutterBottom>
+        <strong>2. Vorsitzender:</strong>
+        <br />
+        Herr Ben Abdrahman Mohamed<br />
+        <strong>Anschrift</strong>
+        <br />
+        Maximilianstraße 13
+        <br />
+        76829 Landau
+        <br />
+        <strong>Telefon:</strong>
+        <br />
+        0151/17 58 12 27
+        <br />
+        <strong>E-Mail:</strong>
+        <br />
+        mohamedali84@live.de
+      </Typography>
+      <Typography sx={{ "mb": 3}}>
+        <strong>Dieses Impressum gilt für: </strong>
+        <Link to="/">
+            https://imv-landau.de
+        </Link>
+      </Typography>
+      <Typography sx={{ "mb": 3}}>
+        <strong>Registergericht: </strong>
+        Amtsgericht Landau
+      </Typography>
+      <Typography sx={{ "mb": 3}}>
+        <strong>Registernummer: </strong>
+        VR2768
+      </Typography>
+      <Typography sx={{ "mb": 3}}>
+        <strong>Steuernummer: </strong>
+        24/652/53374 KVI/I
+      </Typography>
+      <Typography sx={{ "mb": 3}}>
+        <strong>Verantwortlicher i. S. d. §55 Abs. 2 RStV: </strong>
+        Herr Dada Houari
       </Typography>
       <Typography variant="subtitle1">Haftung</Typography>
       <Typography variant="caption" paragraph>
