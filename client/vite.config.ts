@@ -19,7 +19,7 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ["@mui/icons-material", "@emotion/react", "@emotion/styled"],
+    include: ["@mui/material/Unstable_Grid2", "@mui/icons-material", "@emotion/react", "@emotion/styled"],
   },
   resolve: {
     alias: [
