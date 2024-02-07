@@ -35,10 +35,22 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
 
   const blockContext = "editorTextFocus && !suggestWidgetVisible && !renameInputVisible && !inSnippetMode && !quickFixWidgetVisible";
   monaco.editor.addEditorAction({
-    id: "executeCurrentAndAdvance",
-    label: "Execute Block and Advance",
+    id: "saveShortcut2",
+    label: "Save shortcut two",
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
-    contextMenuGroupId: "2_execution",
+    contextMenuGroupId: "1_execution",
+    precondition: blockContext,
+    run: (editor: monaco.editor.ICodeEditor) => {
+      dispatch(
+        pmbEditorActions.setPmbEditorContent({ selectedItem, content: editor.getValue() })
+      );
+    },
+  });
+  monaco.editor.addEditorAction({
+    id: "saveShortcut1",
+    label: "Save shortcut one",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
+    contextMenuGroupId: "1_execution",
     precondition: blockContext,
     run: (editor: monaco.editor.ICodeEditor) => {
       dispatch(
