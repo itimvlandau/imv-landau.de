@@ -38,7 +38,6 @@ const pmbEditorSlice = createSlice({
       state.fetchingContent = false;
     },
     setPmbEditorContent(state, action: PayloadAction<{ selectedItem: TreeItem<any> | null, content: string }>) {
-      debugger;
       state.processingContent = true;
       state.selectedItem = action.payload.selectedItem;
       state.content = action.payload.content;
