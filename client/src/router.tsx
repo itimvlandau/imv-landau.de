@@ -16,7 +16,8 @@ import SchedulePage from "@/pages/Schedule";
 import LocationPage from "@/pages/Location";
 import StatutePage from "@/pages/Statute";
 import ImprintPage from "@/pages/Imprint";
-import PmbEditorPage, { pmbEditorService } from "@/pages/PmbEditor";
+import PmbEditorPage from "@/pages/PmbEditor";
+import { pmbEditorService } from "@/containers/PmbEditor";
 
 export const routes = [
   {

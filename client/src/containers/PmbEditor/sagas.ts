@@ -1,8 +1,8 @@
 import { put, takeLatest, call } from "redux-saga/effects";
-import { pmbEditorService } from "@/pages/PmbEditor";
+import { pmbEditorService } from "@/containers/PmbEditor";
 import { ab2str } from "@/helpers/utils";
 import { TreeItem } from "react-complex-tree";
-import { pmbEditorActions } from "@/pages/PmbEditor";
+import { pmbEditorActions } from "@/containers/PmbEditor";
 import { notifierActions } from "@/containers/Notifier";
 
 function* onGetPmbEditorContent(action: {
