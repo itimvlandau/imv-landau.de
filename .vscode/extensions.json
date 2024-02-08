@@ -4,6 +4,7 @@
         "bmewburn.vscode-intelephense-client",
         "ctf0.php-namespace-resolver",
         "splashmich.symfony-vscode-fixed",
-        "nadim-vscode.symfony-code-snippets"
+        "nadim-vscode.symfony-code-snippets",
+        "robbowen.synthwave-vscode"
     ]
 }
