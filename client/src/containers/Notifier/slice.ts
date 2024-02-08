@@ -1,14 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { VariantType } from "notistack";
 
-interface NotifierState {
+export interface INotifierState {
   message?: string | null;
   error?: any | null;
   isNetworkError: boolean;
   type?: VariantType;
 }
 
-const initialState: NotifierState = {
+const initialState: INotifierState = {
   message: null,
   error: null,
   isNetworkError: false,
@@ -21,7 +21,7 @@ const notifierSlice = createSlice({
   reducers: {
     enqueueNotifier(
       state,
-      action: PayloadAction<NotifierState>
+      action: PayloadAction<INotifierState>
     ) {
       state.message = action.payload.message;
       state.error = action.payload.error;

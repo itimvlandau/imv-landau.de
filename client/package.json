@@ -17,6 +17,7 @@
     "@mui/material": "^5.14.13",
     "@mui/system": "^5.14.13",
     "@reduxjs/toolkit": "^1.9.7",
+    "@rehooks/local-storage": "^2.4.5",
     "allotment": "^1.19.3",
     "axios": "^1.5.1",
     "monaco-editor": "^0.44.0",

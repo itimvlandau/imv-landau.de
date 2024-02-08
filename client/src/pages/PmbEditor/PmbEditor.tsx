@@ -1,5 +1,6 @@
 import { FunctionComponent, ReactElement } from "react";
 import GlobalStyles from "@mui/material/GlobalStyles";
+import { useLocalStorage } from "@rehooks/local-storage";
 import MonacoEditor, { monaco } from "./MonacoEditor";
 import {
   UncontrolledTreeEnvironment,
@@ -11,12 +12,13 @@ import {
 import "react-complex-tree/lib/style-modern.css";
 import { useLoaderData, useNavigation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { pmbEditorActions } from "./slice";
+import { pmbEditorActions, IApplicationState } from "./slice";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 
 const PmbEditor: FunctionComponent = ({}): ReactElement => {
   const tree = useLoaderData() as Record<TreeItemIndex, TreeItem<any>>;
+  const [applicationState, setApplicationState, deleteApplicationState] = useLocalStorage<IApplicationState>('applicationState');
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const pmbEditorContent = useAppSelector((state) => state.pmbEditor.content);
@@ -27,13 +29,15 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
   }
 
   const onChange = (
-    pmbEditorContents: string | undefined,
+    pmbEditorContent: string,
     _event: monaco.editor.IModelContentChangedEvent
   ) => {
-    console.log("pmbEditorContents", pmbEditorContents);
+    applicationState!.pmbEditor!.content = pmbEditorContent;
+    setApplicationState(applicationState);
   };
 
-  const blockContext = "editorTextFocus && !suggestWidgetVisible && !renameInputVisible && !inSnippetMode && !quickFixWidgetVisible";
+  const blockContext =
+    "editorTextFocus && !suggestWidgetVisible && !renameInputVisible && !inSnippetMode && !quickFixWidgetVisible";
   monaco.editor.addEditorAction({
     id: "saveShortcut2",
     label: "Save shortcut two",
@@ -42,7 +46,10 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
     precondition: blockContext,
     run: (editor: monaco.editor.ICodeEditor) => {
       dispatch(
-        pmbEditorActions.setPmbEditorContent({ selectedItem, content: editor.getValue() })
+        pmbEditorActions.setPmbEditorContent({
+          selectedItem,
+          content: editor.getValue(),
+        })
       );
     },
   });
@@ -54,7 +61,10 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
     precondition: blockContext,
     run: (editor: monaco.editor.ICodeEditor) => {
       dispatch(
-        pmbEditorActions.setPmbEditorContent({ selectedItem, content: editor.getValue() })
+        pmbEditorActions.setPmbEditorContent({
+          selectedItem,
+          content: editor.getValue(),
+        })
       );
     },
   });
