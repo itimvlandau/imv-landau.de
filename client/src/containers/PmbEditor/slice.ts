@@ -1,22 +1,6 @@
+import { IPmbEditorState } from "@/types/IPmbEditorState";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TreeItem, TreeItemIndex } from "react-complex-tree";
-import { INotifierState } from "@/containers/Notifier";
-
-export interface IPmbEditorResource {
-  [index: TreeItemIndex]: string | undefined;
-}
-
-export interface IPmbEditorState {
-  selectedItem?: TreeItem<any> | null;
-  resources: IPmbEditorResource;
-  fetchingContent: boolean;
-  processingContent: boolean;
-}
-
-export interface IApplicationState {
-  notifier?: INotifierState;
-  pmbEditor?: IPmbEditorState;
-}
 
 const initialState: IPmbEditorState = {
   resources: {},

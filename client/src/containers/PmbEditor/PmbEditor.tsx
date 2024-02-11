@@ -12,21 +12,19 @@ import {
 import "react-complex-tree/lib/style-modern.css";
 import { useLoaderData, useNavigation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { pmbEditorActions, IApplicationState } from "./slice";
+import { pmbEditorActions } from "./slice";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import { IApplicationState } from "@/types/IApplicationState";
 
 const PmbEditor: FunctionComponent = ({}): ReactElement => {
   const tree = useLoaderData() as Record<TreeItemIndex, TreeItem<any>>;
-  const [applicationState, setApplicationState, deleteApplicationState] =
-    useLocalStorage<IApplicationState>("applicationState");
+  const [applicationState, setApplicationState, deleteApplicationState] = useLocalStorage<IApplicationState>("applicationState");
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const selectedItem = useAppSelector((state) => state.pmbEditor.selectedItem);
   const resources = useAppSelector((state) => state.pmbEditor.resources);
-  let pmbEditorContent = selectedItem
-    ? resources[selectedItem.index]
-    : undefined;
+  const pmbEditorContent = selectedItem ? resources[selectedItem.index] : undefined;
 
   if (navigation.state === "loading") {
     return <h1>loading...</h1>;

@@ -1,12 +1,5 @@
+import { INotifierState } from "@/types/INotifierState";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { VariantType } from "notistack";
-
-export interface INotifierState {
-  message?: string | null;
-  error?: any | null;
-  isNetworkError: boolean;
-  type?: VariantType;
-}
 
 const initialState: INotifierState = {
   message: null,

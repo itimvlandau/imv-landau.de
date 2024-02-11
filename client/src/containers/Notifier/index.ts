@@ -1,4 +1,4 @@
 import Notifier from "./Notifier";
-import notifierReducer, { notifierActions, INotifierState } from "./slice";
+import notifierReducer, { notifierActions } from "./slice";
 
-export { Notifier as default, notifierReducer, notifierActions, type INotifierState };
+export { Notifier as default, notifierReducer, notifierActions };

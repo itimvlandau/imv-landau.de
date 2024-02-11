@@ -1,5 +1,5 @@
 import PmbEditor from "./PmbEditor";
-import pmbEditorReducer, { pmbEditorActions, IApplicationState, IPmbEditorState } from "./slice";
+import pmbEditorReducer, { pmbEditorActions } from "./slice";
 import pmbEditorSagas from "./sagas";
 import * as pmbEditorService from "./service";
 
@@ -9,6 +9,4 @@ export {
   pmbEditorActions,
   pmbEditorSagas,
   pmbEditorService,
-  type IApplicationState,
-  type IPmbEditorState
 };

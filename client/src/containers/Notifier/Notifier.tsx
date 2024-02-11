@@ -33,7 +33,6 @@ const Notifier = () => {
         preventDuplicate: false,
         persist: false,
         onEntered: () => {
-          console.log('enter');
           dispatch(notifierActions.dequeueNotifier());
           
         }
