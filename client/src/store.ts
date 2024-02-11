@@ -9,7 +9,7 @@ const sagaMiddleware = createSagaMiddleware();
 const localStorageMiddleware: Middleware = ({ getState }) => {
   return next => action => {
     const result = next(action);
-    writeStorage('applicationState', getState());
+    writeStorage('applicationState',{pmbEditor: getState().pmbEditor});
     return result;
   };
 };

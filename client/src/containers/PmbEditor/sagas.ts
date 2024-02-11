@@ -1,7 +1,7 @@
 import { put, takeLatest, call } from "redux-saga/effects";
 import { pmbEditorService } from "@/containers/PmbEditor";
 import { ab2str } from "@/helpers/utils";
-import { TreeItem } from "react-complex-tree";
+import { TreeItem, TreeItemIndex } from "react-complex-tree";
 import { pmbEditorActions } from "@/containers/PmbEditor";
 import { notifierActions } from "@/containers/Notifier";
 
@@ -14,7 +14,7 @@ function* onGetPmbEditorContent(action: {
       pmbEditorService.getPmbEditorContent(action.payload.selectedItem.index)
     );
     yield put(
-      pmbEditorActions.getPmbEditorContentSuccess({ content: ab2str(content) })
+      pmbEditorActions.getPmbEditorContentSuccess({ index: action.payload.selectedItem.index, content: ab2str(content) })
     );
   } catch (error: any) {
     yield put(pmbEditorActions.getPmbEditorContentFailure());
@@ -30,12 +30,12 @@ function* onGetPmbEditorContent(action: {
 
 function* onSetPmbEditorContent(action: {
   type: string;
-  payload: { selectedItem: TreeItem<any>; content: string };
+  payload: { index: TreeItemIndex; content: string };
 }) {
   try {
     let message: string = yield call(() =>
       pmbEditorService.setPmbEditorContent(
-        action.payload.selectedItem?.index,
+        action.payload.index,
         action.payload.content
       )
     );

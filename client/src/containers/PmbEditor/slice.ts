@@ -1,10 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { TreeItem } from "react-complex-tree";
+import { TreeItem, TreeItemIndex } from "react-complex-tree";
 import { INotifierState } from "@/containers/Notifier";
 
+export interface IPmbEditorResource {
+  [index: TreeItemIndex]: string | undefined;
+}
+
 export interface IPmbEditorState {
-  selectedItem: TreeItem<any> | null;
-  content: string | undefined;
+  selectedItem?: TreeItem<any> | null;
+  resources: IPmbEditorResource;
   fetchingContent: boolean;
   processingContent: boolean;
 }
@@ -14,10 +18,8 @@ export interface IApplicationState {
   pmbEditor?: IPmbEditorState;
 }
 
-
 const initialState: IPmbEditorState = {
-  selectedItem: null,
-  content: undefined,
+  resources: {},
   fetchingContent: false,
   processingContent: false,
 };
@@ -30,17 +32,20 @@ const pmbEditorSlice = createSlice({
       state.fetchingContent = true;
       state.selectedItem = action.payload.selectedItem;
     },
-    getPmbEditorContentSuccess(state, action: PayloadAction<{ content: string }>) {
+    getPmbEditorContentSuccess(state, action: PayloadAction<{ index: TreeItemIndex, content: string }>) {
       state.fetchingContent = false;
-      state.content = action.payload.content;
+      state.resources[action.payload.index] = action.payload.content;
     },
     getPmbEditorContentFailure(state) {
       state.fetchingContent = false;
     },
-    setPmbEditorContent(state, action: PayloadAction<{ selectedItem: TreeItem<any> | null, content: string }>) {
-      state.processingContent = true;
+    updatePmbEditorContent(state, action: PayloadAction<{ selectedItem: TreeItem, content: string | undefined }>) {
       state.selectedItem = action.payload.selectedItem;
-      state.content = action.payload.content;
+      state.resources[action.payload.selectedItem.index] = action.payload.content;
+    },
+    setPmbEditorContent(state, action: PayloadAction<{ index: TreeItemIndex, content: string }>) {
+      state.processingContent = true;
+      state.resources[action.payload.index] = action.payload.content;
     },
     setPmbEditorContentSuccess(state) {
       state.processingContent = false;

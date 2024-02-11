@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactElement } from "react";
+import { FunctionComponent, ReactElement, useEffect } from "react";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { useLocalStorage } from "@rehooks/local-storage";
 import MonacoEditor, { monaco } from "./MonacoEditor";
@@ -18,24 +18,55 @@ import "allotment/dist/style.css";
 
 const PmbEditor: FunctionComponent = ({}): ReactElement => {
   const tree = useLoaderData() as Record<TreeItemIndex, TreeItem<any>>;
-  const [applicationState, setApplicationState, deleteApplicationState] = useLocalStorage<IApplicationState>('applicationState');
+  const [applicationState, setApplicationState, deleteApplicationState] =
+    useLocalStorage<IApplicationState>("applicationState");
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const pmbEditorContent = useAppSelector((state) => state.pmbEditor.content);
   const selectedItem = useAppSelector((state) => state.pmbEditor.selectedItem);
+  const resources = useAppSelector((state) => state.pmbEditor.resources);
+  let pmbEditorContent = selectedItem
+    ? resources[selectedItem.index]
+    : undefined;
 
   if (navigation.state === "loading") {
     return <h1>loading...</h1>;
   }
 
-  const onChange = (
-    pmbEditorContent: string,
-    _event: monaco.editor.IModelContentChangedEvent
-  ) => {
-    applicationState!.pmbEditor!.content = pmbEditorContent;
-    setApplicationState(applicationState);
+  const onSelect = (item: TreeItem): void => {
+    if (applicationState?.pmbEditor?.resources.hasOwnProperty(item.index)) {
+      dispatch(
+        pmbEditorActions.updatePmbEditorContent({
+          selectedItem: item,
+          content: applicationState?.pmbEditor?.resources[item.index],
+        })
+      );
+    } else {
+      dispatch(pmbEditorActions.getPmbEditorContent({ selectedItem: item }));
+    }
   };
 
+  const onChange = (
+    pmbEditorContent: string | undefined,
+    _event: monaco.editor.IModelContentChangedEvent
+  ) => {
+    selectedItem &&
+      dispatch(
+        pmbEditorActions.updatePmbEditorContent({
+          selectedItem,
+          content: pmbEditorContent,
+        })
+      );
+  };
+
+  const setPmbEditorContent = (editor: monaco.editor.ICodeEditor) => {
+    selectedItem &&
+      dispatch(
+        pmbEditorActions.setPmbEditorContent({
+          index: selectedItem.index,
+          content: editor.getValue(),
+        })
+      );
+  };
   const blockContext =
     "editorTextFocus && !suggestWidgetVisible && !renameInputVisible && !inSnippetMode && !quickFixWidgetVisible";
   monaco.editor.addEditorAction({
@@ -44,14 +75,7 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
     contextMenuGroupId: "1_execution",
     precondition: blockContext,
-    run: (editor: monaco.editor.ICodeEditor) => {
-      dispatch(
-        pmbEditorActions.setPmbEditorContent({
-          selectedItem,
-          content: editor.getValue(),
-        })
-      );
-    },
+    run: setPmbEditorContent,
   });
   monaco.editor.addEditorAction({
     id: "saveShortcut1",
@@ -59,14 +83,7 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
     contextMenuGroupId: "1_execution",
     precondition: blockContext,
-    run: (editor: monaco.editor.ICodeEditor) => {
-      dispatch(
-        pmbEditorActions.setPmbEditorContent({
-          selectedItem,
-          content: editor.getValue(),
-        })
-      );
-    },
+    run: setPmbEditorContent,
   });
 
   return (
@@ -93,11 +110,7 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
               expandedItems: ["root"],
             },
           }}
-          onPrimaryAction={(item: TreeItem): void => {
-            dispatch(
-              pmbEditorActions.getPmbEditorContent({ selectedItem: item })
-            );
-          }}
+          onPrimaryAction={onSelect}
         >
           <Tree
             treeId="tree-1"
