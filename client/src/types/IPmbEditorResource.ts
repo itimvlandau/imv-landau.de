@@ -1,7 +1,7 @@
 import { TreeItemIndex } from "react-complex-tree";
 
 interface IPmbEditorResource {
-  [index: TreeItemIndex]: string | undefined;
+  [index: TreeItemIndex]: string;
 }
 
 export { IPmbEditorResource };

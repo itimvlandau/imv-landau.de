@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class PmbFilesystemService
 {
     public function __construct(
-        private string $projectRootDir,
+        private string $projectDirectoryName,
+        private string $projectPathname,
         private ?int $maxDepth,
         private array $exclude,
     ) {
@@ -28,9 +29,10 @@ class PmbFilesystemService
             ->ignoreUnreadableDirs()
             ->ignoreVCSIgnored(true)
             ->ignoreDotFiles(false)
-            ->in(Path::canonicalize($this->projectRootDir));
+            ->path($this->projectDirectoryName)
+            ->in(Path::canonicalize($this->projectPathname));
 
-        $dirFlattened = $this->scandirFlattened(Path::canonicalize($this->projectRootDir . "/" . $pathname));
+        $dirFlattened = $this->scandirFlattened(Path::canonicalize($this->projectPathname . "/" . $pathname));
         $dirFlattened['root'] = [
             "index" => 'root',
             "children" => array_map(fn ($item) => $item->getPathname(), array_values(iterator_to_array($finder))),

@@ -3,6 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TreeItem, TreeItemIndex } from "react-complex-tree";
 
 const initialState: IPmbEditorState = {
+  selectedItem: undefined,
   resources: {},
   fetchingContent: false,
   processingContent: false,
@@ -23,7 +24,7 @@ const pmbEditorSlice = createSlice({
     getPmbEditorContentFailure(state) {
       state.fetchingContent = false;
     },
-    updatePmbEditorContent(state, action: PayloadAction<{ selectedItem: TreeItem, content: string | undefined }>) {
+    updatePmbEditorContent(state, action: PayloadAction<{ selectedItem: TreeItem, content: string }>) {
       state.selectedItem = action.payload.selectedItem;
       state.resources[action.payload.selectedItem.index] = action.payload.content;
     },

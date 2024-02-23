@@ -1,7 +1,8 @@
-import { FunctionComponent, ReactElement, useEffect } from "react";
+import { FunctionComponent, ReactElement, useRef } from "react";
 import GlobalStyles from "@mui/material/GlobalStyles";
-import { useLocalStorage } from "@rehooks/local-storage";
-import MonacoEditor, { monaco } from "./MonacoEditor";
+import Editor, { Monaco } from "@monaco-editor/react";
+import { editor } from "monaco-editor";
+
 import {
   UncontrolledTreeEnvironment,
   Tree,
@@ -15,74 +16,43 @@ import { useAppDispatch, useAppSelector } from "@/hooks";
 import { pmbEditorActions } from "./slice";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
-import { IApplicationState } from "@/types/IApplicationState";
 
-const PmbEditor: FunctionComponent = ({}): ReactElement => {
+const PmbEditor: FunctionComponent = (): ReactElement => {
   const tree = useLoaderData() as Record<TreeItemIndex, TreeItem<any>>;
-  const [applicationState, setApplicationState, deleteApplicationState] = useLocalStorage<IApplicationState>("applicationState");
-  const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const editorRef = useRef<editor.IStandaloneCodeEditor>();
+  const monacoRef = useRef<Monaco>();
+  const navigation = useNavigation();
   const selectedItem = useAppSelector((state) => state.pmbEditor.selectedItem);
   const resources = useAppSelector((state) => state.pmbEditor.resources);
-  const pmbEditorContent = selectedItem ? resources[selectedItem.index] : undefined;
+  const defaultValue = selectedItem ? resources[selectedItem.index] : "";
 
   if (navigation.state === "loading") {
     return <h1>loading...</h1>;
   }
 
   const onSelect = (item: TreeItem): void => {
-    if (applicationState?.pmbEditor?.resources.hasOwnProperty(item.index)) {
-      dispatch(
-        pmbEditorActions.updatePmbEditorContent({
-          selectedItem: item,
-          content: applicationState?.pmbEditor?.resources[item.index],
-        })
-      );
-    } else {
+    const model = monacoRef.current?.editor
+      .getModels()
+      .find((model) => model.uri.path === item.index);
+    if (!model) {
       dispatch(pmbEditorActions.getPmbEditorContent({ selectedItem: item }));
+    } else {
+      editorRef.current?.setModel(model);
     }
   };
 
-  const onChange = (
-    pmbEditorContent: string | undefined,
-    _event: monaco.editor.IModelContentChangedEvent
-  ) => {
-    selectedItem &&
-      dispatch(
-        pmbEditorActions.updatePmbEditorContent({
-          selectedItem,
-          content: pmbEditorContent,
-        })
-      );
-  };
+  function handleEditorWillMount(monaco: Monaco): void {
+    monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+  }
 
-  const setPmbEditorContent = (editor: monaco.editor.ICodeEditor) => {
-    selectedItem &&
-      dispatch(
-        pmbEditorActions.setPmbEditorContent({
-          index: selectedItem.index,
-          content: editor.getValue(),
-        })
-      );
-  };
-  const blockContext =
-    "editorTextFocus && !suggestWidgetVisible && !renameInputVisible && !inSnippetMode && !quickFixWidgetVisible";
-  monaco.editor.addEditorAction({
-    id: "saveShortcut2",
-    label: "Save shortcut two",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
-    contextMenuGroupId: "1_execution",
-    precondition: blockContext,
-    run: setPmbEditorContent,
-  });
-  monaco.editor.addEditorAction({
-    id: "saveShortcut1",
-    label: "Save shortcut one",
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
-    contextMenuGroupId: "1_execution",
-    precondition: blockContext,
-    run: setPmbEditorContent,
-  });
+  function handleEditorDidMount(
+    editor: editor.IStandaloneCodeEditor,
+    monaco: Monaco
+  ): void {
+    editorRef.current = editor;
+    monacoRef.current = monaco;
+  }
 
   return (
     <>
@@ -116,13 +86,14 @@ const PmbEditor: FunctionComponent = ({}): ReactElement => {
             treeLabel="Playmobox file tree"
           />
         </UncontrolledTreeEnvironment>
-        <MonacoEditor
+        <Editor
           theme="vs-dark"
           height="100vh"
-          defaultLanguage="javascript"
-          defaultValue="// some comment"
-          value={pmbEditorContent}
-          onChange={onChange}
+          defaultLanguage={undefined}
+          defaultValue={defaultValue}
+          path={selectedItem?.index.toString()}
+          beforeMount={handleEditorWillMount}
+          onMount={handleEditorDidMount}
         />
       </Allotment>
     </>
