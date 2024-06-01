@@ -34,6 +34,9 @@ const pmbEditorSlice = createSlice({
     setPmbEditorContentFailure(state) {
       state.processingContent = false;
     },
+    setSelectedItem(state, action: PayloadAction<TreeItem<any>>) {
+      state.selectedItem = action.payload;
+    },
   },
 });
 

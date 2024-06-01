@@ -36,10 +36,11 @@ const PmbEditor: FunctionComponent = (): ReactElement => {
     const model = monacoRef.current?.editor
       .getModels()
       .find((model) => model.uri.path === item.index);
-    if (!model) {
+    if (!model) { // if tree item not yet fetched
       dispatch(pmbEditorActions.getPmbEditorContent({ selectedItem: item }));
-    } else {
+    } else { // update selectedItem
       editorRef.current?.setModel(model);
+      dispatch(pmbEditorActions.setSelectedItem(item));
     }
   };
 
